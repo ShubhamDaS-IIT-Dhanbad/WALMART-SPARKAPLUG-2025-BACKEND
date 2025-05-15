@@ -38,7 +38,7 @@ Answer:"""
                 if cls._retriever is None:
                     cls._retriever = PineconeService.get_retriever(search_kwargs={"k": 2})
 
-                # Use invoke() instead of deprecated get_relevant_documents()
+                # Use invoke() instead of deprecated get_relevant_document
                 test_query = "Sample question to test retriever"
                 sample_docs = cls._retriever.invoke({"query": test_query})
                 for i, doc in enumerate(sample_docs, 1):
