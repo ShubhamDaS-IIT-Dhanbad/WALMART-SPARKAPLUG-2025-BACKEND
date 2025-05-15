@@ -1,34 +1,29 @@
 from fastapi import APIRouter, HTTPException
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
+import openai
+from openai import OpenAI
 from app.core.config import settings
 
 chat_direct_router = APIRouter(prefix="/testing", tags=["testing"])
 
-# Request model
 class ChatRequest(BaseModel):
     message: str
 
-# System prompt message
 prompt_message = (
-    "In brief, you are a helpful and concise chatbot designed to assist student of iit ism dhanbad. "
-    "Answer user questions clearly and efficiently."
+    "In brief, you are a helpful and concise chatbot designed to assist student of IIT ISM Dhanbad. Answer user questions clearly and efficiently."
 )
 
-# Route: post /direct
 @chat_direct_router.post("/")
 async def direct_chat(request: ChatRequest):
     try:
-        # Initialize GPT-4o-mini model using LangChain
-        llm = ChatOpenAI(
-            openai_api_key=settings.OPENAI_API_KEY, 
+        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": prompt_message},
+                {"role": "user", "content": "about iit dhanbad"}
+            ],
         )
-        # Run chat completion with system and user messages
-        response = llm.invoke([
-            {"role": "system", "content": prompt_message},
-            {"role": "user", "content": request.message}
-        ])
-        return {"response": response}
+        return {"response": response.choices[0].message.content}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.chat import router
+# from app.api.chat import router
 from app.api.chat_direct import chat_direct_router
 from app.core.config import settings
 # from app.routers import items, users
@@ -36,7 +36,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+# app.include_router(router)
 app.include_router(chat_direct_router)
 
 @app.get("/health")
