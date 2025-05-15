@@ -36,9 +36,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-# app.include_router(users.router, prefix=settings.API_V1_STR)
-# app.include_router(items.router, prefix=settings.API_V1_STR)
 app.include_router(router)
 app.include_router(chat_direct_router)
 
