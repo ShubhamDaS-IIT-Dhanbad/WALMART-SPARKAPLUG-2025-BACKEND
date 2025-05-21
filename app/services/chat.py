@@ -61,7 +61,7 @@ def get_chat_response(user_message: str) -> str:
     ]
 
     # 🔹 Print the ultimate prompt
-    print("\n=== Final Prompt Sent to OpenAI ===",messages)
+    print("\n=== Final Prompt Sent to OpenAI ===",context,messages)
 
     response = client.chat.completions.create(model="gpt-4o", messages=messages)
     return response.choices[0].message.content
