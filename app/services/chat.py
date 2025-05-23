@@ -25,8 +25,8 @@ ensure_nltk_resources()
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 PROMPT_MESSAGE = (
-    "You are a chatbot for IIT ISM Dhanbad. Only answer questions related to the institute scholrship,hostel,academics. "
-    "If the question is unrelated, reply: 'I can only answer questions about IIT ISM Dhanbad.' Be brief and accurate."
+    "You are a chatbot for IIT ISM Dhanbad. Only answer questions related to the iit ism dhanbad and every thing will be asked regarding iit ism dhanbad institute keep in mind"
+    "If the question is unrelated to iit ism dhanbad, reply: 'I can only answer questions about IIT ISM Dhanbad.' Be brief and accurate."
 )
 
 # NLTK Preprocessing
