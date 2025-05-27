@@ -17,7 +17,10 @@ class Settings(BaseSettings):
         
         "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/",
         "https://chat-bot-iit-ism-frontend-dbwo.vercel.app",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/chat"
+        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/chat",
+        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/upload",
+        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app",
+        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/"
     ]
     
     # Database Configuration
