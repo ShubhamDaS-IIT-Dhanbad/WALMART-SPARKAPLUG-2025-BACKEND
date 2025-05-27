@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-# from app.api.chat import router
+
 from app.api.chat_direct import chat_direct_router
+from app.api.upload import upload_router  # ✅ Fix: Complete this import
 from app.core.config import settings
-# from app.routers import items, users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     ]):
         raise ValueError("Missing required environment variables")
     yield
-    # Cleanup if needed
+    # Optional: Cleanup tasks
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -36,8 +36,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.include_router(router)
+# Register API routers
 app.include_router(chat_direct_router)
+app.include_router(upload_router)  # ✅ Register upload router
 
 @app.get("/health")
 async def health():
