@@ -13,9 +13,10 @@ class DeleteRequest(BaseModel):
     name: str
     max_id: int
 
-@delete_router.delete("/")
+@delete_router.post("/")
 def delete_vectors(payload: DeleteRequest):
     try:
+        print(payload)
         ids_to_delete = [f"{payload.name}_{i}" for i in range(payload.max_id + 1)]
         index.delete(ids=ids_to_delete)
         return {"status": "success", "deleted_count": len(ids_to_delete)}

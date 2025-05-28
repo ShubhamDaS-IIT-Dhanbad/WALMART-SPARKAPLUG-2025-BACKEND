@@ -174,7 +174,9 @@ async def upload_file(
 
 
     return {
-        "message": f"PDF processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
-        "json_file": json_filename,
-        "upserted_ids": [v["id"] for v in vectors]
+    "message": f"PDF processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
+    "json_file": json_filename,
+    "upserted_ids": [v["id"] for v in vectors],
+    "max_id": len(gist_chunk_data)
     }
+
