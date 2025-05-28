@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.chat_direct import chat_direct_router
 from app.api.upload import upload_router  # ✅ Fix: Complete this import
+from app.api.delete_vector import delete_router
 from app.core.config import settings
 
 @asynccontextmanager
@@ -39,6 +40,8 @@ app.add_middleware(
 # Register API routers
 app.include_router(chat_direct_router)
 app.include_router(upload_router)  # ✅ Register upload router
+app.include_router(delete_router)  # ✅ Register upload router
+
 
 @app.get("/health")
 async def health():
