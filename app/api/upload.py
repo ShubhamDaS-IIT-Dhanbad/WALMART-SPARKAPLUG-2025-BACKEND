@@ -151,7 +151,8 @@ async def upsert_vector_batch(vectors):
                 vec["metadata"] = sanitize_metadata(vec["metadata"])
         index.upsert(vectors=batch)
 
-async def process_file(file: UploadFile, name: str, is_pdf: bool = False):
+async def process_file(file: UploadFile, name: str, is_pdf: bool):
+    print(is_pdf)
     text = read_pdf_file(file) if is_pdf else read_text_file(file)
     chunks = chunk_text(text)
     gist_chunk_data = []
