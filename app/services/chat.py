@@ -5,10 +5,11 @@ from .pinecone_service import query_pinecone
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 PROMPT_MESSAGE = (
-    "You are a chatbot for IIT (ISM) Dhanbad. Only respond to questions specifically related to IIT Dhanbad, ISM Dhanbad, IIT (ISM) Dhanbad, or ISM. "
-    "This includes topics like scholarships, hostels, academics, campus life, admissions, and official procedures. "
-    "If the question is unrelated, reply: 'I can only answer questions about IIT (ISM) Dhanbad.' Be brief and accurate."
+    "You are a helpful and concise chatbot for IIT (ISM) Dhanbad. Always interpret questions in the context of IIT (ISM) Dhanbad, ISM Dhanbad, or IIT Dhanbad. "
+    "Provide accurate answers related to academics, hostels, scholarships, admissions, campus life, official procedures, or any relevant topic. "
+    "If a question seems ambiguous or unrelated, do your best to reinterpret it within the IIT (ISM) Dhanbad context before responding."
 )
+
 
 def get_embedding(text: str) -> list[float]:
     response = client.embeddings.create(model="text-embedding-ada-002", input=text)
