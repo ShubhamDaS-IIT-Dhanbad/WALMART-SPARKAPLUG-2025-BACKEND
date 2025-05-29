@@ -225,7 +225,7 @@ async def upload_text_file(
         "message": f"Text file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
         "json_file": json_filename,
         "upserted_ids": [v["id"] for v in vectors],
-        "total_chunks": len(gist_chunk_data)
+        "max_id": len(gist_chunk_data)
     }
 
 @upload_router.post("/pdf")
@@ -289,5 +289,5 @@ async def upload_pdf_file(
         "message": f"PDF file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
         "json_file": json_filename,
         "upserted_ids": [v["id"] for v in vectors],
-        "total_chunks": len(gist_chunk_data)
+        "max_id": len(gist_chunk_data)
     }
