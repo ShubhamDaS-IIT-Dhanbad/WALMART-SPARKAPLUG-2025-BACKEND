@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.chat_direct import chat_direct_router
-from app.api.upload import upload_router  # ✅ Fix: Complete this import
+from app.api.upload import upload_router
 from app.api.delete_vector import delete_router
 from app.core.config import settings
 
