@@ -7,7 +7,7 @@ from fastapi import APIRouter, UploadFile, File, Form
 from openai import OpenAI
 from pinecone import Pinecone
 import tiktoken
-import pdfplumber  # for PDF text extraction
+import pdfplumber
 
 from app.core.config import settings
 
@@ -131,63 +131,48 @@ async def get_embedding(text: str):
         return None
 
 def sanitize_metadata(metadata):
-    """
-    Recursively sanitize metadata so that all values are
-    either primitives or JSON strings for complex objects.
-    Pinecone metadata must be str, number, bool, or list of strings.
-    """
     if isinstance(metadata, dict):
-        clean_meta = {}
-        for k, v in metadata.items():
-            clean_meta[k] = sanitize_metadata(v)
-        return clean_meta
+        return {k: sanitize_metadata(v) for k, v in metadata.items()}
     elif isinstance(metadata, list):
-        # If list of strings, keep as is
         if all(isinstance(i, str) for i in metadata):
             return metadata
-        else:
-            # Serialize any other list to JSON string
-            return json.dumps(metadata)
+        return json.dumps(metadata)
     elif isinstance(metadata, (str, int, float, bool)) or metadata is None:
         return metadata
     else:
-        # For any other type (e.g., dict), convert to JSON string
         return json.dumps(metadata)
 
 async def upsert_vector_batch(vectors):
     BATCH_SIZE = 100
     for i in range(0, len(vectors), BATCH_SIZE):
         batch = vectors[i:i + BATCH_SIZE]
-        # Sanitize metadata before upsert
         for vec in batch:
             if "metadata" in vec:
                 vec["metadata"] = sanitize_metadata(vec["metadata"])
         index.upsert(vectors=batch)
 
-@upload_router.post("/text")
-async def upload_text_file(
-    file: UploadFile = File(...),
-    name: str = Form(...)
-):
-    text = read_text_file(file)
+async def process_file(file: UploadFile, name: str, is_pdf: bool = False):
+    text = read_pdf_file(file) if is_pdf else read_text_file(file)
     chunks = chunk_text(text)
     gist_chunk_data = []
 
-    for idx, chunk in enumerate(chunks):
+    current_id = 0
+    for chunk in chunks:
         pairs = await generate_gist_pairs(chunk)
-        for pair_idx, pair in enumerate(pairs):
+        for pair in pairs:
             gist = pair.get("gist", "")
             chunk_str = pair.get("chunk", "")
             metadata = pair.get("metadata", {})
             if gist and chunk_str:
                 gist_chunk_data.append({
-                    "id": f"{name}_{idx}_{pair_idx}",
+                    "id": f"{name}_{current_id}",
                     "name": name,
                     "gist": gist,
                     "chunk": chunk_str,
-                    "chunk_index": f"{idx}_{pair_idx}",
+                    "chunk_index": str(current_id),
                     "metadata": metadata
                 })
+                current_id += 1
 
     json_filename = f"{name}_qa.json"
     json_path = f"./docs/{json_filename}"
@@ -197,9 +182,7 @@ async def upload_text_file(
 
     vectors = []
     for item in gist_chunk_data:
-        id_ = item["id"]
-        gist = item["gist"]
-        embedding = await get_embedding(gist)
+        embedding = await get_embedding(item["gist"])
         if embedding:
             metadata = {
                 **item.get("metadata", {}),
@@ -208,7 +191,7 @@ async def upload_text_file(
                 "name": item["name"]
             }
             vectors.append({
-                "id": id_,
+                "id": item["id"],
                 "values": embedding,
                 "metadata": metadata
             })
@@ -222,72 +205,16 @@ async def upload_text_file(
         print(f"Error deleting JSON file: {e}")
 
     return {
-        "message": f"Text file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
+        "message": f"{'PDF' if is_pdf else 'Text'} file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
         "json_file": json_filename,
         "upserted_ids": [v["id"] for v in vectors],
         "max_id": len(gist_chunk_data)
     }
+
+@upload_router.post("/text")
+async def upload_text_file(file: UploadFile = File(...), name: str = Form(...)):
+    return await process_file(file, name, is_pdf=False)
 
 @upload_router.post("/pdf")
-async def upload_pdf_file(
-    file: UploadFile = File(...),
-    name: str = Form(...)
-):
-    text = read_pdf_file(file)  # Extract text from PDF using pdfplumber
-    chunks = chunk_text(text)
-    gist_chunk_data = []
-
-    for idx, chunk in enumerate(chunks):
-        pairs = await generate_gist_pairs(chunk)
-        for pair_idx, pair in enumerate(pairs):
-            gist = pair.get("gist", "")
-            chunk_str = pair.get("chunk", "")
-            metadata = pair.get("metadata", {})
-            if gist and chunk_str:
-                gist_chunk_data.append({
-                    "id": f"{name}_{idx}_{pair_idx}",
-                    "name": name,
-                    "gist": gist,
-                    "chunk": chunk_str,
-                    "chunk_index": f"{idx}_{pair_idx}",
-                    "metadata": metadata
-                })
-
-    json_filename = f"{name}_qa.json"
-    json_path = f"./docs/{json_filename}"
-    os.makedirs(os.path.dirname(json_path), exist_ok=True)
-    with open(json_path, "w", encoding="utf-8") as jf:
-        json.dump(gist_chunk_data, jf, indent=2)
-
-    vectors = []
-    for item in gist_chunk_data:
-        id_ = item["id"]
-        gist = item["gist"]
-        embedding = await get_embedding(gist)
-        if embedding:
-            metadata = {
-                **item.get("metadata", {}),
-                "chunk": item["chunk"],
-                "chunk_index": item["chunk_index"],
-                "name": item["name"]
-            }
-            vectors.append({
-                "id": id_,
-                "values": embedding,
-                "metadata": metadata
-            })
-
-    await upsert_vector_batch(vectors)
-
-    try:
-        os.remove(json_path)
-        print(f"Deleted temporary JSON file: {json_path}")
-    except Exception as e:
-        print(f"Error deleting JSON file: {e}")
-
-    return {
-        "message": f"PDF file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
-        "json_file": json_filename,
-        "upserted_ids": [v["id"] for v in vectors],
-        "max_id": len(gist_chunk_data)
-    }
+async def upload_pdf_file(file: UploadFile = File(...), name: str = Form(...)):
+    return await process_file(file, name, is_pdf=True)
