@@ -10,7 +10,6 @@ class ChatRequest(BaseModel):
 @chat_direct_router.post("/")
 async def direct_chat(request: ChatRequest):
     try:
-        print("hi")
         return {"response": get_chat_response(request.message)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
