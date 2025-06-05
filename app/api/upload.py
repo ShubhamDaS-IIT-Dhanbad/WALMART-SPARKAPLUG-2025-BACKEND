@@ -103,7 +103,7 @@ Text:
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
         )
