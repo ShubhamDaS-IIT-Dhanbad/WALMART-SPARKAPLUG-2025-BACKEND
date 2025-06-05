@@ -25,5 +25,5 @@ def get_chat_response(user_message: str) -> str:
     print(context_raw)
     # print("\n=== Final Prompt Sent to OpenAI ===", context_text, messages)
 
-    response = client.chat.completions.create(model="o4-mini-2025-04-16", messages=messages)
+    response = client.chat.completions.create(model="gpt-4o-mini", messages=messages)
     return response.choices[0].message.content
