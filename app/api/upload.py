@@ -17,14 +17,17 @@ index = pinecone.Index(settings.PINECONE_INDEX_NAME)
 
 upload_router = APIRouter(prefix="/upload", tags=["upload"])
 
+
 def clean_gpt_response(text: str) -> str:
     text = re.sub(r"^```json?\n", "", text)
     text = re.sub(r"\n```$", "", text)
     return text.strip()
 
+
 def read_text_file(file: UploadFile) -> str:
     content = file.file.read()
     return content.decode("utf-8")
+
 
 def read_pdf_file(file: UploadFile) -> str:
     pdf_bytes = file.file.read()
@@ -37,7 +40,8 @@ def read_pdf_file(file: UploadFile) -> str:
                 text += page_text + "\n"
     return text
 
-def chunk_text(text: str, max_tokens: int = 2000):
+
+def chunk_text(text: str, max_tokens: int = 3000):
     enc = tiktoken.get_encoding("cl100k_base")
     lines = text.split("\n")
     chunks = []
@@ -52,60 +56,40 @@ def chunk_text(text: str, max_tokens: int = 2000):
         chunks.append(current.strip())
     return chunks
 
-async def generate_gist_pairs(chunk: str):
-    prompt = f"""
-Extract relevant information from the text below for use in a Retrieval-Augmented Generation (RAG) system with Pinecone.
+
+async def generate_gist_pairs(chunk: str, model: str, prompt: str):
+    filled_prompt= f"""
+You are an intelligent system that extracts relevant information from the following text for use in a Retrieval-Augmented Generation (RAG) system using Pinecone.
 
 Instructions:
-1. Analyze the text carefully and split it into logical chunks if it contains multiple distinct sections.
-2. For each chunk, provide the following:
-   - "chunk": The exact original text chunk.
-   - "gist": A concise and precise summary that captures the main context and key points of the chunk, suitable for generating vector embeddings.
-   - "metadata": A JSON object with structured information derived only from the chunk. Each metadata field must be accurate and specifically reference the relevant content in the chunk. Use the following fields if applicable; omit any that do not apply:
-     - scholarship_name
-     - eligibility
-     - benefits
-     - deadline
-     - application_process
-     - number_of_scholarships
-     - provider
-     - category (e.g., merit-based, need-based)
-     - location
-     - any other key fact relevant to the chunk
+1. Read the text carefully and split it into logical "gist" entries with corresponding "metadata".
+2. Metadata should reflect any useful tags, titles, dates, or structural information (e.g., section names, topics).
+3. All "gist" values must summarize or represent meaningful pieces of content for embedding.
 
-Return ONLY a valid JSON array with objects in the exact format below:
+Return ONLY a valid JSON array like this:
 
 [
   {{
-    "chunk": "...",
-    "gist": "...",
+    "gist": "Short summary or key content",
     "metadata": {{
-      "scholarship_name": "...",
-      "eligibility": "...",
-      "benefits": "...",
-      "deadline": "...",
-      "application_process": "...",
-      "number_of_scholarships": "...",
-      "provider": "...",
-      "category": "...",
-      "location": "...",
-      "other_key_fact": "..."
+      "topic": "Optional tag",
+      "section": "Optional section name"
     }}
   }},
   ...
 ]
-
-If a field is not present in the chunk, do not include that field in "metadata".
-
+must do instruction:
+ {{prompt}}
+ 
+Only include metadata fields if they are clearly identifiable in the text.
 Text:
 \"\"\"{chunk}\"\"\"
 """
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
+            model=model,
+            messages=[{"role": "user", "content": filled_prompt}]
         )
         content = response.choices[0].message.content
         cleaned = clean_gpt_response(content)
@@ -119,6 +103,7 @@ Text:
         print(f"Error generating gist pairs: {e}")
         return []
 
+
 async def get_embedding(text: str):
     try:
         response = openai.embeddings.create(
@@ -129,6 +114,7 @@ async def get_embedding(text: str):
     except Exception as e:
         print(f"Embedding error: {e}")
         return None
+
 
 def sanitize_metadata(metadata):
     if isinstance(metadata, dict):
@@ -142,6 +128,7 @@ def sanitize_metadata(metadata):
     else:
         return json.dumps(metadata)
 
+
 async def upsert_vector_batch(vectors):
     BATCH_SIZE = 100
     for i in range(0, len(vectors), BATCH_SIZE):
@@ -151,36 +138,47 @@ async def upsert_vector_batch(vectors):
                 vec["metadata"] = sanitize_metadata(vec["metadata"])
         index.upsert(vectors=batch)
 
-async def process_file(file: UploadFile, name: str, is_pdf: bool):
-    print(is_pdf)
+
+async def process_file(file: UploadFile, name: str, model: str, prompt: str, is_pdf: bool):
+    print(f"Processing {'PDF' if is_pdf else 'Text'} file with model: {model}")
     text = read_pdf_file(file) if is_pdf else read_text_file(file)
     chunks = chunk_text(text)
     gist_chunk_data = []
 
     current_id = 0
-    for chunk in chunks:
-        pairs = await generate_gist_pairs(chunk)
+    for i, chunk in enumerate(chunks):
+        print(f"\n🧩 Chunk {i + 1}/{len(chunks)}:")
+        print("-" * 60)
+        print(chunk)
+        print("-" * 60)
+
+        pairs = await generate_gist_pairs(chunk, model=model, prompt=prompt)
+
+        print(f"📦 JSON Pairs returned for Chunk {i + 1}:")
+        print(json.dumps(pairs, indent=2))  # Pretty-print the JSON response
+
         for pair in pairs:
             gist = pair.get("gist", "")
-            chunk_str = pair.get("chunk", "")
             metadata = pair.get("metadata", {})
-            if gist and chunk_str:
+            if gist:
                 gist_chunk_data.append({
                     "id": f"{name}_{current_id}",
                     "name": name,
                     "gist": gist,
-                    "chunk": chunk_str,
+                    "chunk": chunk,
                     "chunk_index": str(current_id),
                     "metadata": metadata
                 })
                 current_id += 1
 
+    # Save output to local JSON
     json_filename = f"{name}_qa.json"
     json_path = f"./docs/{json_filename}"
     os.makedirs(os.path.dirname(json_path), exist_ok=True)
     with open(json_path, "w", encoding="utf-8") as jf:
         json.dump(gist_chunk_data, jf, indent=2)
 
+    # Create and upsert embeddings
     vectors = []
     for item in gist_chunk_data:
         embedding = await get_embedding(item["gist"])
@@ -201,9 +199,9 @@ async def process_file(file: UploadFile, name: str, is_pdf: bool):
 
     try:
         os.remove(json_path)
-        print(f"Deleted temporary JSON file: {json_path}")
+        print(f"🧹 Deleted temporary JSON file: {json_path}")
     except Exception as e:
-        print(f"Error deleting JSON file: {e}")
+        print(f"❌ Error deleting JSON file: {e}")
 
     return {
         "message": f"{'PDF' if is_pdf else 'Text'} file processed for '{name}'. Gist–chunk pairs saved and embeddings upserted.",
@@ -212,10 +210,23 @@ async def process_file(file: UploadFile, name: str, is_pdf: bool):
         "max_id": len(gist_chunk_data)
     }
 
+
+# API endpoints
 @upload_router.post("/text")
-async def upload_text_file(file: UploadFile = File(...), name: str = Form(...)):
-    return await process_file(file, name, is_pdf=False)
+async def upload_text_file(
+    file: UploadFile = File(...),
+    name: str = Form(...),
+    model: str = Form(...),
+    prompt: str = Form(...)
+):
+    return await process_file(file, name, model=model, prompt=prompt, is_pdf=False)
+
 
 @upload_router.post("/pdf")
-async def upload_pdf_file(file: UploadFile = File(...), name: str = Form(...)):
-    return await process_file(file, name, is_pdf=True)
+async def upload_pdf_file(
+    file: UploadFile = File(...),
+    name: str = Form(...),
+    model: str = Form(...),
+    prompt: str = Form(...)
+):
+    return await process_file(file, name, model=model, prompt=prompt, is_pdf=True)
