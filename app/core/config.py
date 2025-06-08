@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     PINECONE_API_KEY: str
     PINECONE_ENV: str
     PINECONE_INDEX_NAME: str
+    PINECONE_INDEX_URI: str
+    GEMINI_API_KEY:str
     
     model_config = SettingsConfigDict(
         env_file=".env",

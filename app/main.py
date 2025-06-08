@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.chat_direct import chat_direct_router
 from app.api.upload import upload_router
+from app.api.upload_raw import upload_raw_router
+from app.api.gemni_upload import gemini_upload_router
 from app.api.delete_vector import delete_router
 from app.core.config import settings
 
@@ -39,9 +41,10 @@ app.add_middleware(
 
 # Register API routers
 app.include_router(chat_direct_router)
-app.include_router(upload_router)  # ✅ Register upload router
+app.include_router(upload_router)
+app.include_router(upload_raw_router) 
 app.include_router(delete_router)  # ✅ Register upload router
-
+app.include_router(gemini_upload_router)
 
 @app.get("/health")
 async def health():
