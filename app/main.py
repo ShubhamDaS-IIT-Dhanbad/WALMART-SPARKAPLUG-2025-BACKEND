@@ -11,7 +11,7 @@ from app.core.config import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Validate settings at startup
+    
     if not all([
         settings.OPENAI_API_KEY,
         settings.PINECONE_API_KEY,
