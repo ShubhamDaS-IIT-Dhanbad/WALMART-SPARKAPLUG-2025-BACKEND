@@ -7,7 +7,7 @@ delete_router = APIRouter(prefix="/delete", tags=["delete"])
 
 # Initialize Pinecone
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
-index = pc.Index("iit-ism-chat-bot-1536")
+index = pc.Index("iit-ism-llama-text-embed-v2-index")
 
 class DeleteRequest(BaseModel):
     name: str
