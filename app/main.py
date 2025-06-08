@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
     ]):
         raise ValueError("Missing required environment variables")
     yield
-    # Optional: Cleanup tasks
+    
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
