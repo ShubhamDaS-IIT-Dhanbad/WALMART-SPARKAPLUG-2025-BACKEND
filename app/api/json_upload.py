@@ -113,13 +113,13 @@ async def upload_qna_file(file: UploadFile = File(...), file_name: str = Form(..
             "NAME": file_name,
             "MAX_SIZE": len(vectors_to_upsert)
         }
-        databases.create_document(
+        doc=databases.create_document(
             database_id=DATABASE_ID,
             collection_id=COLLECTION_ID,
             document_id="unique()",
             data=document_data
         )
-        print(f"Stored metadata in Appwrite: {document_data}")
+        print(f"Stored metadata in Appwrite: {doc['$id']},")
     except AppwriteException as e:
         print(f"Appwrite error: {e.message}")
         try:
@@ -131,6 +131,7 @@ async def upload_qna_file(file: UploadFile = File(...), file_name: str = Form(..
 
     return {
         "message": f"{len(vectors_to_upsert)} entries uploaded to Pinecone and metadata stored in Appwrite.",
-        "uploaded_count": len(vectors_to_upsert),
-        "file_name": file_name
+        "max_id": len(vectors_to_upsert),
+        "file_name": file_name,
+        "doc_id":doc['$id']
     }
