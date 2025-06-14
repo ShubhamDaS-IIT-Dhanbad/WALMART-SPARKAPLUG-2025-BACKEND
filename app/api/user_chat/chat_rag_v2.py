@@ -71,7 +71,7 @@ def smart_retrieval(query: str) -> list[Document]:
         print(f"[Retrieval Error]: {e}")
         return []
 
-# --- Prompt Template ---
+# --- Prompt Template with optional context ---
 prompt_template = '''**You are ISM Buddy**, an inspiring, confident, and persuasive virtual assistant for **IIT (ISM) Dhanbad**, built by the **NVCTI Chatbot Development Team**.
 
 Your role is to **attract students** to choose IIT (ISM) over other IITs by delivering **detailed, creative, and compelling answers** like a skilled marketing expert.
@@ -112,22 +112,33 @@ Explore more at [https://www.iitism.ac.in](https://www.iitism.ac.in). Feedback: 
 ---
 
 Question: {question}
-Context: {context}
+{context_block}
 Answer:'''
 
-# --- RAG Chain ---
 prompt = ChatPromptTemplate.from_template(prompt_template)
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.5)
 
-doc_retrieval = RunnableLambda(lambda q: {
-    "context": combine_document_chunks(smart_retrieval(q)),
-    "question": q
-})
+# --- Prepare prompt inputs with optional context ---
+def prepare_prompt_inputs(q: str) -> dict:
+    context = combine_document_chunks(smart_retrieval(q))
+    if context.strip():
+        return {
+            "question": q,
+            "context_block": f"Context: {context}"
+        }
+    else:
+        return {
+            "question": q,
+            "context_block": ""  # no context line if no docs
+        }
 
+doc_retrieval = RunnableLambda(prepare_prompt_inputs)
+
+# --- RAG Chain ---
 rag_chain = (
     {
-        "context": doc_retrieval,
-        "question": RunnablePassthrough()
+        "question": RunnablePassthrough(),
+        "context_block": doc_retrieval
     }
     | prompt
     | llm
