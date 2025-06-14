@@ -4,15 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 
 
-from app.api.user_chat.chat import user_chat_router
+from app.api.user_chat.chat_rag_v2 import chat_rag_v2_router
+# from app.api.user_chat.chat_rag_v1 import user_chat_router
 
 from app.api.appwrite.folder_create import folder_create_router
 from app.api.appwrite.document_folder_create import document_folder_router
 
-from app.api.admin_upload_data.vidit import vidit_router
-from app.api.admin_upload_data.pdf_text import pdf_text_router
-from app.api.admin_upload_data.pdf_text_v2 import pdf_text_router_v2
-from app.api.admin_upload_data.qna import json_router
+from app.api.admin_upload_data.pdf_text_v3 import pdf_text_router_v3
+# from bck.app.api.admin_upload_data.pdf_text_old_v.pdf_text import pdf_text_router
+# from bck.app.api.admin_upload_data.pdf_text_old_v.pdf_text_v2 import pdf_text_router_v2
+from app.api.admin_upload_data.qna import qna_router
 from app.api.admin_upload_data.raw import raw_router
 
 
@@ -52,17 +53,18 @@ app.add_middleware(
 
 
 #USER CHAT ROUTE
-app.include_router(user_chat_router)
+app.include_router(chat_rag_v2_router)
+# app.include_router(user_chat_router)
 
 #FOLDER MANAGMENT ROUTES
 app.include_router(folder_create_router)
 app.include_router(document_folder_router)
 
 #UPLOAD DATA ROUTES [PDF / JSON / RAW]
-app.include_router(vidit_router)
-app.include_router(pdf_text_router)
-app.include_router(pdf_text_router_v2)
-app.include_router(json_router)
+app.include_router(pdf_text_router_v3)
+# app.include_router(pdf_text_router)
+# app.include_router(pdf_text_router_v2)
+app.include_router(qna_router)
 app.include_router(raw_router) 
 
 #DELETE FROM PINE CONE AND UPDATE IN APPWRITE

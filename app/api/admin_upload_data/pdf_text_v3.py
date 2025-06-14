@@ -3,9 +3,13 @@ from fastapi.responses import JSONResponse
 import os
 import uuid
 import tempfile
+import json
+import re
 from typing import List
 from dotenv import load_dotenv
 import tiktoken
+import openai
+import shutil
 
 from app.core.config import settings
 from appwrite.client import Client
@@ -14,12 +18,12 @@ from appwrite.exception import AppwriteException
 
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
+from langchain_core.documents import Document
 from pinecone import Pinecone, ServerlessSpec
 
-vidit_router = APIRouter(prefix="/upload", tags=["post"])
+pdf_text_router_v3 = APIRouter(prefix="/upload", tags=["post"])
 load_dotenv()
-
 # Appwrite setup
 PROJECT_ID = "6825c9130002bf2b1514"
 DATABASE_ID = "6836c51200377ed9fbdd"
@@ -37,6 +41,7 @@ PINECONE_API_KEY = settings.PINECONE_API_KEY
 PINECONE_INDEX_NAME = "ism-buddy-dim-1536"
 pc = Pinecone(api_key=PINECONE_API_KEY)
 
+
 if PINECONE_INDEX_NAME not in pc.list_indexes().names():
     pc.create_index(
         name=PINECONE_INDEX_NAME,
@@ -47,11 +52,39 @@ if PINECONE_INDEX_NAME not in pc.list_indexes().names():
 index = pc.Index(PINECONE_INDEX_NAME)
 
 embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+encoding = tiktoken.encoding_for_model("gpt-4o-mini")
 
 
+def clean_gpt_response(response: str) -> str:
+    return re.sub(r"^```(json)?|```$", "", response.strip(), flags=re.MULTILINE)
 
 
-@vidit_router.post("/text")
+async def process_chunks(chunks: List[Document], filename: str):
+    all_vectors = []
+    all_ids = []
+    total_tokens = 0
+
+    for counter, chunk in enumerate(chunks):
+        vector_id = f"{filename}_{counter}"
+        text_content = chunk.page_content
+
+        embedding = embedding_model.embed_query(text_content)
+        token_count = len(encoding.encode(text_content))
+        total_tokens += token_count
+
+        all_vectors.append({
+            "id": vector_id,
+            "values": embedding,
+            "metadata": {
+                "text": text_content
+            }
+        })
+        all_ids.append(vector_id)
+
+    return all_vectors, all_ids, total_tokens
+
+
+@pdf_text_router_v3.post("/text")
 async def upload_text_file(
     filename: str = Form(...),
     collection_id: str = Form(...),
@@ -59,49 +92,22 @@ async def upload_text_file(
 ):
     try:
         temp_dir = tempfile.mkdtemp()
-        splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=128)
-        encoding = tiktoken.encoding_for_model("gpt-4o-mini")
-
-        all_vectors = []
-        all_ids = []
-        total_tokens = 0
-
         file_path = os.path.join(temp_dir, f"{uuid.uuid4()}.txt")
         with open(file_path, "wb") as f:
             f.write(await file.read())
 
-        # Read .txt file content
         with open(file_path, "r", encoding="utf-8") as f:
             text = f.read()
 
-        # Wrap text in Langchain-compatible document
-        from langchain_core.documents import Document
         docs = [Document(page_content=text)]
-
+        splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=900)
         chunks = splitter.split_documents(docs)
 
-        for i, chunk in enumerate(chunks):
-            chunk_id = f"{filename}_{i}"
-            embedding = embedding_model.embed_query(chunk.page_content)
-            token_count = len(encoding.encode(chunk.page_content))
-            total_tokens += token_count
-
-            all_vectors.append({
-                "id": chunk_id,
-                "values": embedding,
-                "metadata": {
-                    "text": chunk.page_content,
-                    "source": filename
-                }
-            })
-            all_ids.append(chunk_id)
-
-        # Upsert to Pinecone
+        all_vectors, all_ids, total_tokens = await process_chunks(chunks, filename)
         index.upsert(vectors=all_vectors)
 
-        # Save metadata to Appwrite
         try:
-            doc = databases.create_document(
+            databases.create_document(
                 database_id=DATABASE_ID,
                 collection_id=collection_id,
                 document_id=uuid.uuid4().hex,
@@ -122,8 +128,11 @@ async def upload_text_file(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        shutil.rmtree(temp_dir)
 
-@vidit_router.post("/pdf")
+
+@pdf_text_router_v3.post("/pdf")
 async def upload_pdf(
     filename: str = Form(...),
     collection_id: str = Form(...),
@@ -131,43 +140,21 @@ async def upload_pdf(
 ):
     try:
         temp_dir = tempfile.mkdtemp()
-        splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=128)
-        encoding = tiktoken.encoding_for_model("gpt-4o-mini")
-
-        all_vectors = []
-        all_ids = []
-        total_tokens = 0
-
         file_path = os.path.join(temp_dir, f"{uuid.uuid4()}.pdf")
         with open(file_path, "wb") as f:
             f.write(await file.read())
 
         loader = PyMuPDFLoader(file_path)
         docs = loader.load()
+
+        splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=900)
         chunks = splitter.split_documents(docs)
 
-        for i, chunk in enumerate(chunks):
-            chunk_id = f"{filename}_{i}"
-            embedding = embedding_model.embed_query(chunk.page_content)
-            token_count = len(encoding.encode(chunk.page_content))
-            total_tokens += token_count
-
-            all_vectors.append({
-                "id": chunk_id,
-                "values": embedding,
-                "metadata": {
-                    "text": chunk.page_content,
-                    "source": filename
-                }
-            })
-            all_ids.append(chunk_id)
-
-        # Upsert vectors to Pinecone
+        all_vectors, all_ids, total_tokens = await process_chunks(chunks, filename)
         index.upsert(vectors=all_vectors)
 
-        # Log metadata in Appwrite
         try:
-            doc = databases.create_document(
+            databases.create_document(
                 database_id=DATABASE_ID,
                 collection_id=collection_id,
                 document_id=uuid.uuid4().hex,
@@ -177,7 +164,6 @@ async def upload_pdf(
                 }
             )
         except AppwriteException as e:
-            # Rollback Pinecone vectors
             index.delete(ids=all_ids)
             raise HTTPException(status_code=500, detail=f"Appwrite error: {e.message}")
 
@@ -189,3 +175,5 @@ async def upload_pdf(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        shutil.rmtree(temp_dir)

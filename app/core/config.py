@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
 
 class Settings(BaseSettings):
+
     PROJECT_NAME: str = "FastAPI Application"
     VERSION: str = "1.0.0"
     DESCRIPTION: str = "A modern FastAPI application with best practices"
