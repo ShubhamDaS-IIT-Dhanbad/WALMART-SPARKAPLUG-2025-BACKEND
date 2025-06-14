@@ -9,6 +9,7 @@ from app.api.user_chat.chat import user_chat_router
 from app.api.appwrite.folder_create import folder_create_router
 from app.api.appwrite.document_folder_create import document_folder_router
 
+from app.api.admin_upload_data.vidit import vidit_router
 from app.api.admin_upload_data.pdf_text import pdf_text_router
 from app.api.admin_upload_data.pdf_text_v2 import pdf_text_router_v2
 from app.api.admin_upload_data.qna import json_router
@@ -58,6 +59,7 @@ app.include_router(folder_create_router)
 app.include_router(document_folder_router)
 
 #UPLOAD DATA ROUTES [PDF / JSON / RAW]
+app.include_router(vidit_router)
 app.include_router(pdf_text_router)
 app.include_router(pdf_text_router_v2)
 app.include_router(json_router)

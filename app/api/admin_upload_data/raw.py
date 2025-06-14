@@ -1,7 +1,8 @@
 import json
 import uuid
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
-from pinecone import Pinecone
+from pinecone import Pinecone, ServerlessSpec
+
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.exception import AppwriteException
