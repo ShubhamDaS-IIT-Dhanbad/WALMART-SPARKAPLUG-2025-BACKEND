@@ -13,11 +13,35 @@ import google.generativeai as genai
 from starlette.concurrency import run_in_threadpool
 import tiktoken
 import textwrap
+
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from pinecone import Pinecone
+from appwrite.client import Client
+from appwrite.services.databases import Databases
+from appwrite.exception import AppwriteException
 
 from app.core.config import settings  # Load your .env settings here
 
 pdf_text_router_v2 = APIRouter(prefix="/upload", tags=["Upload & Gemini"])
+
+
+
+
+# Appwrite configuration
+PROJECT_ID = "6825c9130002bf2b1514"
+DATABASE_ID = "6836c51200377ed9fbdd"
+API_KEY = "standard_92aaa34dd0375dc1bf9c36180dd91c3a923a2c8d6e92da38a609ce0d6d00734c62700cb1fe23218bd959e64552ff396f740faf1c3d0c2cb66cfc5f164e9ec845eb1750ebc8d4356e4d9c1a16a1f68bc446b6fa45dbebaee001ceb66a4447dfc4fff677b8125718833c4e5a099c450a97d875ed0b1d4eb115bbf3d06e09b7b039"
+APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1"
+
+# Appwrite Client
+client = Client()
+client.set_endpoint(APPWRITE_ENDPOINT)
+client.set_project(PROJECT_ID)
+client.set_key(API_KEY)
+databases = Databases(client)
+
+
+
 
 # Load API Keys and configure clients
 gemini_api_key = settings.GEMINI_API_KEY
@@ -180,7 +204,8 @@ def create_json_from_markdown(md_text: str) -> List[Dict]:
 @pdf_text_router_v2.post("/gemini/text")
 async def upload_text_to_gemini(
     md_text: str = Form(...),
-    doc_id: str = Form(...)
+    doc_id: str = Form(...),
+    collection_id: str = Form(...)
 ):
     """
     Accepts raw markdown text and an identifier (doc_id), converts to JSON entries,
@@ -223,16 +248,12 @@ async def upload_text_to_gemini(
         }
     )
 
-
 @pdf_text_router_v2.post("/gemini/pdf")
 async def upload_pdf_to_gemini(
     filename: str = Form(...),
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
+    collection_id: str = Form(...)
 ):
-    """
-    Accepts a PDF file, extracts content using text or OCR, returns structured JSON,
-    and upserts parsed JSON entries to Pinecone with IDs derived from filename.
-    """
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
@@ -242,15 +263,11 @@ async def upload_pdf_to_gemini(
     safe_filename = filename.replace(" ", "_")
     temp_path = os.path.join(upload_dir, safe_filename)
 
-    # Save file temporarily
     with open(temp_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
     try:
-        # Extract markdown text from PDF in threadpool
         markdown_text = await run_in_threadpool(extract_text_from_pdf, temp_path)
-
-        # Process extracted markdown text with Gemini AI in threadpool
         data = await run_in_threadpool(create_json_from_markdown, markdown_text)
 
         records = []
@@ -274,15 +291,36 @@ async def upload_pdf_to_gemini(
         if records:
             index.upsert_records("example-namespace", records)
 
-        return JSONResponse(
-            content={
-                "status": "success",
-                "message": f"✅ {len(records)} entries embedded & uploaded to Pinecone.",
-                "max_id": len(data),
+        try:
+            document_data = {
+                "NAME": filename,
+                "MAX_SIZE": len(records)
             }
-        )
+            doc = databases.create_document(
+                database_id=DATABASE_ID,
+                collection_id=collection_id,
+                document_id=uuid.uuid4().hex,
+                data=document_data
+            )
+            doc_id = doc["$id"] if isinstance(doc, dict) else getattr(doc, "$id", None)
+            print(f"✅ Stored metadata in Appwrite: {doc_id}")
+        except AppwriteException as e:
+            print(f"❌ Appwrite error: {e.message}")
+            try:
+                index.delete(ids=[r["id"] for r in records], namespace="example-namespace")
+                print(f"🗑️ Rolled back {len(records)} vectors from Pinecone.")
+            except Exception as pinecone_delete_error:
+                print(f"⚠️ Pinecone rollback failed: {pinecone_delete_error}")
+            raise HTTPException(status_code=500, detail="Failed to store metadata in Appwrite.")
+
+        return {
+            "message": f"{len(records)} entries uploaded to Pinecone and metadata stored in Appwrite.",
+            "max_id": len(records),
+            "file_name": filename,
+            "doc_id": doc_id
+        }
+
     finally:
-        # Cleanup temporary PDF file
         try:
             os.remove(temp_path)
         except Exception as e:
