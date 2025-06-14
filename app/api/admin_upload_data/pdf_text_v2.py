@@ -17,7 +17,7 @@ from pinecone import Pinecone
 
 from app.core.config import settings  # Load your .env settings here
 
-gemini_upload_router = APIRouter(prefix="/upload", tags=["Upload & Gemini"])
+pdf_text_router_v2 = APIRouter(prefix="/upload", tags=["Upload & Gemini"])
 
 # Load API Keys and configure clients
 gemini_api_key = settings.GEMINI_API_KEY
@@ -177,7 +177,7 @@ def create_json_from_markdown(md_text: str) -> List[Dict]:
 
 # ====== Routes ======
 
-@gemini_upload_router.post("/gemini/text")
+@pdf_text_router_v2.post("/gemini/text")
 async def upload_text_to_gemini(
     md_text: str = Form(...),
     doc_id: str = Form(...)
@@ -224,7 +224,7 @@ async def upload_text_to_gemini(
     )
 
 
-@gemini_upload_router.post("/gemini/pdf")
+@pdf_text_router_v2.post("/gemini/pdf")
 async def upload_pdf_to_gemini(
     filename: str = Form(...),
     file: UploadFile = File(...)

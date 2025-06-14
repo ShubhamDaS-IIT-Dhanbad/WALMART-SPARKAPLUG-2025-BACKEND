@@ -15,7 +15,7 @@ openai = OpenAI(api_key=settings.OPENAI_API_KEY)
 pinecone = Pinecone(api_key=settings.PINECONE_API_KEY, environment=settings.PINECONE_ENV)
 index = pinecone.Index(settings.PINECONE_INDEX_NAME)
 
-upload_router = APIRouter(prefix="/upload", tags=["upload"])
+pdf_text_router = APIRouter(prefix="/upload", tags=["upload"])
 
 
 def clean_gpt_response(text: str) -> str:
@@ -212,7 +212,7 @@ async def process_file(file: UploadFile, name: str, model: str, prompt: str, is_
 
 
 # API endpoints
-@upload_router.post("/text")
+@pdf_text_router.post("/text")
 async def upload_text_file(
     file: UploadFile = File(...),
     name: str = Form(...),
@@ -222,7 +222,7 @@ async def upload_text_file(
     return await process_file(file, name, model=model, prompt=prompt, is_pdf=False)
 
 
-@upload_router.post("/pdf")
+@pdf_text_router.post("/pdf")
 async def upload_pdf_file(
     file: UploadFile = File(...),
     name: str = Form(...),
@@ -230,3 +230,47 @@ async def upload_pdf_file(
     prompt: str = Form(...)
 ):
     return await process_file(file, name, model=model, prompt=prompt, is_pdf=True)
+
+
+
+
+
+
+
+
+
+
+
+@pdf_text_router.post("/json/qna/delete")
+async def delete_qna_file(
+    file_name: str = Form(...),
+    max_id: int = Form(...),
+    doc_id: str = Form(...)  # Accept doc_id directly
+):
+    vector_ids = [f"{file_name}_{i}" for i in range(max_id)]
+
+    # Step 1: Delete vectors from Pinecone
+    try:
+        index.delete(ids=vector_ids, namespace="example-namespace")
+        print(f"✅ Deleted {len(vector_ids)} vectors from Pinecone.")
+    except Exception as e:
+        print(f"❌ Pinecone deletion error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete vectors from Pinecone.")
+
+    # Step 2: Delete metadata from Appwrite
+    try:
+        databases.delete_document(
+            database_id=DATABASE_ID,
+            collection_id=COLLECTION_ID,
+            document_id=doc_id
+        )
+        print(f"✅ Deleted metadata from Appwrite for doc_id: {doc_id}")
+    except AppwriteException as e:
+        print(f"❌ Appwrite deletion error: {e.message}")
+        raise HTTPException(status_code=500, detail="Failed to delete metadata from Appwrite.")
+
+    return {
+        "message": f"Deleted {len(vector_ids)} vectors and metadata.",
+        "file_name": file_name,
+        "doc_id": doc_id
+    }

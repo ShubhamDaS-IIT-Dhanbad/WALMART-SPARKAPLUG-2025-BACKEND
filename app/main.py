@@ -1,14 +1,21 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.chat_direct import chat_direct_router
-from app.api.json_upload import upload_json_router
-from app.api.upload import upload_router
-from app.api.upload_raw import upload_raw_router
-from app.api.gemni_upload import gemini_upload_router
-from app.api.delete_vector import delete_router
 from app.core.config import settings
+
+
+from app.api.user_chat.chat import user_chat_router
+
+from app.api.appwrite.folder_create import folder_create_router
+from app.api.appwrite.document_folder_create import document_folder_router
+
+from app.api.admin_upload_data.pdf_text import pdf_text_router
+from app.api.admin_upload_data.pdf_text_v2 import pdf_text_router_v2
+from app.api.admin_upload_data.qna import json_router
+from app.api.admin_upload_data.raw import raw_router
+
+
+from app.api.delete.delete_from_pine_cone import delete_from_pine_cone_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -40,13 +47,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register API routers
-app.include_router(chat_direct_router)
-app.include_router(upload_json_router)
-app.include_router(upload_router)
-app.include_router(upload_raw_router) 
-app.include_router(delete_router)  # ✅ Register upload router
-app.include_router(gemini_upload_router)
+
+
+
+#USER CHAT ROUTE
+app.include_router(user_chat_router)
+
+#FOLDER MANAGMENT ROUTES
+app.include_router(folder_create_router)
+app.include_router(document_folder_router)
+
+#UPLOAD DATA ROUTES [PDF / JSON / RAW]
+app.include_router(pdf_text_router)
+app.include_router(pdf_text_router_v2)
+app.include_router(json_router)
+app.include_router(raw_router) 
+
+#DELETE FROM PINE CONE AND UPDATE IN APPWRITE
+app.include_router(delete_from_pine_cone_router)
+
+
+
+
+
 
 
 @app.get("/health")
