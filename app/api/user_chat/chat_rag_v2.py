@@ -102,7 +102,7 @@ Explore more at [https://www.iitism.ac.in](https://www.iitism.ac.in). Feedback: 
 ### Output Format (JSON):
 {{  
   "answer": "your answer",  
-  "follow up question": [  
+  "follow_up_question": [  
     "question 1",  
     "question 2",  
     "question 3"  
