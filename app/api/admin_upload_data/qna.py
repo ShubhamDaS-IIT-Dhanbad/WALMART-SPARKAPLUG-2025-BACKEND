@@ -86,10 +86,10 @@ async def upload_qna_file(
             "id": vector_id,
             "values": embedded_vector,
             "metadata": {
-                "question": question,
-                "answer": answer
+                "text": f"question: {question} + answer: {answer}"
             }
         })
+
         vector_ids.append(vector_id)
         print(vector_id)
     if not vectors_to_upsert:
