@@ -27,8 +27,7 @@ databases = Databases(client)
 
 # Pinecone client setup
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
-index = pc.Index("iit-ism-llama-text-embed-v2-index")
-
+index = pc.Index(host=settings.PINECONE_INDEX_URI)
 # Logging setup
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -51,7 +50,7 @@ def delete_vectors(payload: DeleteRequest):
     try:
         logger.info(f"Received deletion request: {payload}")
         ids_to_delete = [f"{payload.name}_{i}" for i in range(payload.max_id + 1)]
-        index.delete(ids=ids_to_delete, namespace="example-namespace")
+        index.delete(ids=ids_to_delete)
         return {"status": "success", "deleted_count": len(ids_to_delete)}
     except Exception as e:
         logger.error(f"❌ Error deleting from Pinecone: {str(e)}")
@@ -71,7 +70,7 @@ async def delete_qna_file(
     # Step 1: Delete vectors from Pinecone
     try:
         vector_ids = [f"{file_name}_{i}" for i in range(max_id + 1)]
-        index.delete(ids=vector_ids, namespace="example-namespace")
+        index.delete(ids=vector_ids)
         logger.info(f"✅ Deleted {len(vector_ids)} vectors from Pinecone.")
     except Exception as e:
         logger.error(f"❌ Pinecone deletion error: {e}")

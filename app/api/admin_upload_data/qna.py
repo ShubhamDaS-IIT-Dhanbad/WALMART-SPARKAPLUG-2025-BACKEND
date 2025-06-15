@@ -76,7 +76,7 @@ async def upload_qna_file(
             continue
 
         try:
-            embedded_vector = embedding_model.embed_query(question)
+            embedded_vector = embedding_model.embed_query(question+answer)
         except Exception as embed_err:
             print(f"❌ Embedding error at index {idx}: {embed_err}")
             continue
