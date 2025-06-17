@@ -13,14 +13,9 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
 
-from langchain_community.retrievers import BM25Retriever
-from langchain.retrievers.ensemble import EnsembleRetriever
-
 from app.core.config import settings
 
-# Load environment variables
 load_dotenv()
-
 chat_rag_v2_router = APIRouter(prefix="/chat", tags=["chat"])
 
 # --- Pinecone Setup ---
@@ -46,28 +41,9 @@ vector_store = PineconeVectorStore(
     index=index
 )
 
-# --- Load or Define Chunks for BM25 ---
-# ⚠️ Replace this with actual documents from your database or file
-chunks = [
-    Document(page_content="IIT (ISM) Dhanbad is renowned for its mining engineering department.", metadata={"question": "Why choose IIT Dhanbad?", "answer": "It is famous for its mining program."}),
-    Document(page_content="The campus hosts cultural, technical, and sports festivals annually.", metadata={"question": "What are the events at IIT Dhanbad?", "answer": "Many events including Concetto and Srijan."}),
-    Document(page_content="IIT (ISM) Dhanbad was established in 1926 and upgraded to IIT status in 2016.", metadata={"question": "When was IIT Dhanbad founded?", "answer": "It was founded in 1926."})
-]
-
-if not chunks:
-    raise ValueError("❌ 'chunks' is empty. Please provide documents for BM25Retriever.")
-
-bm25 = BM25Retriever.from_documents(chunks)
-bm25.k = 5
-
-pine_retriever = vector_store.as_retriever(
-    search_type="mmr",
-    search_kwargs={"k": 5, "fetch_k": 20, "lambda_mult": 0.7}
-)
-
-retriever = EnsembleRetriever(
-    retrievers=[pine_retriever, bm25],
-    weights=[0.4, 0.6]
+retriever = vector_store.as_retriever(
+    search_type="similarity",
+    search_kwargs={"k": 3}
 )
 
 # --- Document Formatter ---
@@ -80,16 +56,18 @@ def combine_document_chunks(documents: list[Document]) -> str:
             f"A: {meta.get('answer')}" if meta.get('answer') else "",
             meta.get("text") or doc.page_content.strip()
         ]
-        parts = [p for p in parts if p]
+        parts = [p for p in parts if p]  # remove empty strings
         if parts:
             chunks.append("\n".join(parts))
     return "\n\n--- SOURCE SPLIT ---\n\n".join(chunks)
 
-# --- Smart Retrieval Function ---
-def smart_retrieval(query: str):
+# --- Smart Retrieval ---
+def smart_retrieval(query: str) -> list[Document]:
     try:
         docs = retriever.invoke(query)
-        return docs
+        if not isinstance(docs, list) or len(docs) < 3:
+            docs = vector_store.similarity_search(query, k=6)
+        return [doc for doc in docs if isinstance(doc, Document)]
     except Exception as e:
         print(f"[Retrieval Error]: {e}")
         return []
@@ -141,7 +119,6 @@ Answer:'''
 prompt = ChatPromptTemplate.from_template(prompt_template)
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.5)
 
-# --- Prepare Inputs ---
 def prepare_prompt_inputs(q: str) -> dict:
     try:
         docs = smart_retrieval(q)
@@ -157,22 +134,19 @@ def prepare_prompt_inputs(q: str) -> dict:
             "context_block": ""
         }
 
-# --- Final RAG Chain ---
 rag_chain = (
     {
         "question": RunnablePassthrough(),
-        "context_block": RunnableLambda(lambda q: prepare_prompt_inputs(q)["context_block"])
+        "context_block": RunnableLambda(prepare_prompt_inputs)
     }
     | prompt
     | llm
     | StrOutputParser()
 )
 
-# --- Request Schema ---
 class ChatRequest(BaseModel):
     question: str
 
-# --- API Route ---
 @chat_rag_v2_router.post("/")
 async def chat_with_bot(req: ChatRequest):
     try:
