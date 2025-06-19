@@ -46,7 +46,7 @@ vector_store = PineconeVectorStore(
     index=index
 )
 
-# --- Load or Define Chunks for BM25 ---
+
 # ⚠️ Replace this with actual documents from your database or file
 chunks = [
     Document(page_content="IIT (ISM) Dhanbad is renowned for its mining engineering department.", metadata={"question": "Why choose IIT Dhanbad?", "answer": "It is famous for its mining program."}),
@@ -75,17 +75,15 @@ def combine_document_chunks(documents: list[Document]) -> str:
     chunks = []
     for doc in documents:
         meta = doc.metadata or {}
-        text = meta.get("text") or (doc.page_content.strip() if doc.page_content else "")
         parts = [
-            f"Q: {meta.get('question')}" if meta.get("question") else "",
-            f"A: {meta.get('answer')}" if meta.get("answer") else "",
-            text
+            f"Q: {meta.get('question')}" if meta.get('question') else "",
+            f"A: {meta.get('answer')}" if meta.get('answer') else "",
+            meta.get("text") or doc.page_content.strip()
         ]
         parts = [p for p in parts if p]
         if parts:
             chunks.append("\n".join(parts))
     return "\n\n--- SOURCE SPLIT ---\n\n".join(chunks)
-
 
 # --- Smart Retrieval Function ---
 def smart_retrieval(query: str):
@@ -120,11 +118,13 @@ Showcase **IIT (ISM)**’s strengths, culture, achievements, and opportunities i
 - **Processes/Schemes**: Steps, eligibility, deadlines, how to apply.
 - Add relevant **rankings, links, stats, or USPs**.
 
+Explore more at [https://www.iitism.ac.in](https://www.iitism.ac.in). Feedback: **admission_ms@iitism.ac.in**
+
 ---
 
 ### Output Format (JSON):
 {{  
-  "answer": "your answer must be in points etc some emojies",  
+  "answer": "your answer",  
   "follow_up_question": [  
     "question 1",  
     "question 2",  
