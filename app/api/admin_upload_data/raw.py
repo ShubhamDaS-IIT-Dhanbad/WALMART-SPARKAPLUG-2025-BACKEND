@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 import json
 import uuid
 import os
-from typing import List
+import re
+from typing import List, Optional
 from dotenv import load_dotenv
 
 from app.core.config import settings
@@ -13,11 +14,13 @@ from appwrite.exception import AppwriteException
 from langchain_openai import OpenAIEmbeddings
 from pinecone import Pinecone
 
+from urlextract import URLExtract
+
 load_dotenv()
 
 raw_router = APIRouter(prefix="/upload", tags=["post"])
 
-# Appwrite configuration
+# ---------- Appwrite Configuration ----------
 PROJECT_ID = "6825c9130002bf2b1514"
 DATABASE_ID = "6836c51200377ed9fbdd"
 API_KEY = "standard_92aaa34dd0375dc1bf9c36180dd91c3a923a2c8d6e92da38a609ce0d6d00734c62700cb1fe23218bd959e64552ff396f740faf1c3d0c2cb66cfc5f164e9ec845eb1750ebc8d4356e4d9c1a16a1f68bc446b6fa45dbebaee001ceb66a4447dfc4fff677b8125718833c4e5a099c450a97d875ed0b1d4eb115bbf3d06e09b7b039"
@@ -29,7 +32,7 @@ client.set_project(PROJECT_ID)
 client.set_key(API_KEY)
 databases = Databases(client)
 
-# Pinecone Client
+# ---------- Pinecone Setup ----------
 try:
     pc = Pinecone(api_key=settings.PINECONE_API_KEY)
     index = pc.Index(host=settings.PINECONE_INDEX_URI)
@@ -37,14 +40,24 @@ except Exception as e:
     print(f"❌ Error initializing Pinecone: {e}")
     index = None
 
-# OpenAI Embedding
+# ---------- Embedding Model ----------
 embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
+# ---------- URL Extractor ----------
+url_extractor = URLExtract()
+URL_REGEX = re.compile(r'''((?:http|ftp)s?://[^\s<>"'\]\)]{4,})''', flags=re.IGNORECASE)
 
+def extract_links(text: str) -> list:
+    raw_links = set(m.group(0).strip(').,]') for m in URL_REGEX.finditer(text))
+    raw_links.update(url_extractor.find_urls(text))
+    return sorted(link.replace("\n", "").strip() for link in raw_links)
+
+# ---------- Upload Raw Vector Route ----------
 @raw_router.post("/raw")
 async def upload_qna_file(
     file: UploadFile = File(...),
     filename: str = Form(...),
+    drivelink: Optional[str] = Form(default=""),
     collection_id: str = Form(...)
 ):
     file_name = filename.strip()
@@ -73,21 +86,24 @@ async def upload_qna_file(
         if not isinstance(vector_text, str) or not isinstance(visible_text, str):
             raise HTTPException(status_code=400, detail=f"Both 'vector' and 'text' must be strings at index {idx}.")
 
-        # Generate embedding
         try:
-            embedded_vector = embedding_model.embed_query(vector_text)
+            clean_text = vector_text.replace("\n", " ").strip()
+            embedded_vector = embedding_model.embed_query(clean_text)
+            links = extract_links(visible_text)
+
+            vector_id = f"{file_name}_{idx}"
+            vectors_to_upsert.append({
+                "id": vector_id,
+                "values": embedded_vector,
+                "metadata": {
+                    "text": visible_text.replace("\n", " ").strip(),
+                    "links": links
+                }
+            })
+            vector_ids.append(vector_id)
+            print(f"✅ Vector ID: {vector_id}")
         except Exception as embed_error:
             raise HTTPException(status_code=500, detail=f"Embedding error at index {idx}: {embed_error}")
-
-        vector_id = f"{file_name}_{idx}"
-        vectors_to_upsert.append({
-            "id": vector_id,
-            "values": embedded_vector,
-            "metadata": {
-                "text": visible_text
-            }
-        })
-        vector_ids.append(vector_id)
 
     try:
         index.upsert(vectors=vectors_to_upsert)
@@ -101,7 +117,7 @@ async def upload_qna_file(
             database_id=DATABASE_ID,
             collection_id=collection_id,
             document_id=uuid.uuid4().hex,
-            data={"NAME": file_name, "MAX_SIZE": len(vectors_to_upsert)}
+            data={"NAME": file_name, "MAX_SIZE": len(vectors_to_upsert), "DRIVE_LINK": drivelink or ""}
         )
         doc_id = doc["$id"] if isinstance(doc, dict) else getattr(doc, "$id", None)
         print(f"✅ Stored metadata in Appwrite: {doc_id}")

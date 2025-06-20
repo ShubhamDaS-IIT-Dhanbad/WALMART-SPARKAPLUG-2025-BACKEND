@@ -13,7 +13,7 @@ document_folder_router = APIRouter(prefix="/admin", tags=["Folders"])
 # Appwrite configuration
 PROJECT_ID = "6825c9130002bf2b1514"
 DATABASE_ID = "6836c51200377ed9fbdd"
-API_KEY = "standard_92aaa34dd0375dc1bf9c36180dd91c3a923a2c8d6e92da38a609ce0d6d00734c62700cb1fe23218bd959e64552ff396f740faf1c3d0c2cb66cfc5f164e9ec845eb1750ebc8d4356e4d9c1a16a1f68bc446b6fa45dbebaee001ceb66a4447dfc4fff677b8125718833c4e5a099c450a97d875ed0b1d4eb115bbf3d06e09b7b039"  # Replace with your actual Appwrite API key
+API_KEY = "standard_92aaa34dd0375dc1bf9c36180dd91c3a923a2c8d6e92da38a609ce0d6d00734c62700cb1fe23218bd959e64552ff396f740faf1c3d0c2cb66cfc5f164e9ec845eb1750ebc8d4356e4d9c1a16a1f68bc446b6fa45dbebaee001ceb66a4447dfc4fff677b8125718833c4e5a099c450a97d875ed0b1d4eb115bbf3d06e09b7b039"
 APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1"
 
 # Initialize Appwrite client
@@ -46,14 +46,33 @@ async def create_folder(payload: FolderCreateRequest):
                 Permission.delete(Role.any()),
             ]
         )
+        print(f"✅ Collection '{payload.folder_name}' created with ID: {new_collection_id}")
 
         # 2. Add attributes
-        databases.create_string_attribute(DATABASE_ID, new_collection_id, "NAME", 255, True)
-        databases.create_integer_attribute(database_id=DATABASE_ID,collection_id=new_collection_id,key="MAX_SIZE",required=True)
-        databases.create_integer_attribute(database_id=DATABASE_ID,collection_id=new_collection_id,key="DRIVE_LINK")
+        databases.create_string_attribute(
+            database_id=DATABASE_ID,
+            collection_id=new_collection_id,
+            key="NAME",
+            size=255,  # ✅ FIXED: size parameter is required
+            required=True
+        )
+        databases.create_string_attribute(
+            database_id=DATABASE_ID,
+            collection_id=new_collection_id,
+            key="DRIVE_LINK",
+            size=255,  # ✅ FIXED: size parameter is required
+            required=True
+        )
+        databases.create_integer_attribute(
+            database_id=DATABASE_ID,
+            collection_id=new_collection_id,
+            key="MAX_SIZE",
+            required=True
+        )
+        print("✅ Attributes added successfully")
 
         # 3. Wait for attributes to be indexed
-        time.sleep(2)
+        time.sleep(5)
 
         # 4. Add folder reference to parent collection
         document = databases.create_document(
@@ -72,6 +91,7 @@ async def create_folder(payload: FolderCreateRequest):
                 Permission.delete(Role.any()),
             ]
         )
+        print("✅ Reference added to parent collection")
 
         return {
             "message": "Folder created and added to parent collection.",
@@ -81,8 +101,6 @@ async def create_folder(payload: FolderCreateRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating folder: {str(e)}")
-
-
 
 
 class DeleteFolderRequest(BaseModel):
@@ -106,7 +124,7 @@ async def delete_folder(payload: DeleteFolderRequest):
             database_id=DATABASE_ID,
             collection_id=payload.folder_collection_id
         )
-
+        print(f"🗑️ Collection {payload.folder_collection_id} deleted")
 
         # 3. Find document in parent collection where sub_folder_id == folder_collection_id
         parent_docs = databases.list_documents(
@@ -127,6 +145,7 @@ async def delete_folder(payload: DeleteFolderRequest):
             collection_id=payload.parent_collection_id,
             document_id=doc_id
         )
+        print("✅ Reference document deleted from parent collection")
 
         return {"message": "Folder and reference deleted successfully."}
 
