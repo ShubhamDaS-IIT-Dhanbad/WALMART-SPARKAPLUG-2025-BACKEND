@@ -189,15 +189,19 @@ async def upload_pdf(
             raise HTTPException(status_code=500, detail=f"Pinecone upsert failed: {str(e)}")
 
         try:
+            data = {
+                "NAME": filename,
+                "MAX_SIZE": len(all_vectors)
+            }
+
+            if drivelink:
+                data["DRIVE_LINK"] = drivelink
+
             databases.create_document(
                 database_id=DATABASE_ID,
                 collection_id=collection_id,
                 document_id=uuid.uuid4().hex,
-                data={
-                    "NAME": filename,
-                    "MAX_SIZE": len(all_vectors),
-                    "DRIVE_LINK": drivelink or ""
-                }
+                data=data
             )
         except AppwriteException as e:
             index.delete(ids=all_ids)

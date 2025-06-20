@@ -113,12 +113,21 @@ async def upload_qna_file(
         raise HTTPException(status_code=500, detail="Failed to upsert data into Pinecone.")
 
     try:
+        document_data = {
+            "NAME": file_name,
+            "MAX_SIZE": len(vectors_to_upsert)
+        }
+
+        if drivelink:
+            document_data["DRIVE_LINK"] = drivelink
+
         doc = databases.create_document(
             database_id=DATABASE_ID,
             collection_id=collection_id,
             document_id=uuid.uuid4().hex,
-            data={"NAME": file_name, "MAX_SIZE": len(vectors_to_upsert), "DRIVE_LINK": drivelink or ""}
+            data=document_data
         )
+
         doc_id = doc["$id"] if isinstance(doc, dict) else getattr(doc, "$id", None)
         print(f"✅ Stored metadata in Appwrite: {doc_id}")
     except AppwriteException as e:
