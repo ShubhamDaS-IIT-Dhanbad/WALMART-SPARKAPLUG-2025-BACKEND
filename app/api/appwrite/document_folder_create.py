@@ -50,6 +50,7 @@ async def create_folder(payload: FolderCreateRequest):
         # 2. Add attributes
         databases.create_string_attribute(DATABASE_ID, new_collection_id, "NAME", 255, True)
         databases.create_integer_attribute(database_id=DATABASE_ID,collection_id=new_collection_id,key="MAX_SIZE",required=True)
+        databases.create_integer_attribute(database_id=DATABASE_ID,collection_id=new_collection_id,key="DRIVE_LINK")
 
         # 3. Wait for attributes to be indexed
         time.sleep(2)

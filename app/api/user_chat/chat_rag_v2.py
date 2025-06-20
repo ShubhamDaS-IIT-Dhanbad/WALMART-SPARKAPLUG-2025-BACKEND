@@ -46,12 +46,9 @@ vector_store = PineconeVectorStore(
     index=index
 )
 
-# --- Load or Define Chunks for BM25 ---
-# ⚠️ Replace this with actual documents from your database or file
+# ⚠️ Replace with your real BM25 docs if needed
 chunks = [
     Document(page_content="IIT (ISM) Dhanbad is renowned for its mining engineering department.", metadata={"question": "Why choose IIT Dhanbad?", "answer": "It is famous for its mining program."}),
-    Document(page_content="The campus hosts cultural, technical, and sports festivals annually.", metadata={"question": "What are the events at IIT Dhanbad?", "answer": "Many events including Concetto and Srijan."}),
-    Document(page_content="IIT (ISM) Dhanbad was established in 1926 and upgraded to IIT status in 2016.", metadata={"question": "When was IIT Dhanbad founded?", "answer": "It was founded in 1926."})
 ]
 
 if not chunks:
@@ -71,26 +68,32 @@ retriever = EnsembleRetriever(
 )
 
 # --- Document Formatter ---
-def combine_document_chunks(documents: list[Document]) -> str:
+def combine_document_chunks(documents: list[Document], print_retrieved_data: bool = False) -> str:
     chunks = []
-    for doc in documents:
+    for idx, doc in enumerate(documents):
         meta = doc.metadata or {}
         text = meta.get("text") or (doc.page_content.strip() if doc.page_content else "")
         parts = [
             f"Q: {meta.get('question')}" if meta.get("question") else "",
             f"A: {meta.get('answer')}" if meta.get("answer") else "",
-            text
+            text,
+            f"Links: {', '.join(meta['links'])}" if isinstance(meta.get("links"), list) and meta.get("links") else ""
         ]
-        parts = [p for p in parts if p]
-        if parts:
-            chunks.append("\n".join(parts))
+        formatted = "\n".join([p for p in parts if p])
+        chunks.append(formatted)
+
+        if print_retrieved_data:
+            print(f"\n--- Chunk {idx + 1} ---")
+            print(f"Metadata: {json.dumps(meta, indent=2)}")
+            print(f"Content:\n{formatted}")
+
     return "\n\n--- SOURCE SPLIT ---\n\n".join(chunks)
 
-
-# --- Smart Retrieval Function ---
+# --- Smart Retrieval ---
 def smart_retrieval(query: str):
     try:
         docs = retriever.invoke(query)
+        print(docs)
         return docs
     except Exception as e:
         print(f"[Retrieval Error]: {e}")
@@ -110,7 +113,6 @@ Showcase **IIT (ISM)**’s strengths, culture, achievements, and opportunities i
 ### Instructions:
 - Provide **stand-alone** and **complete** answers.
 - **Never say** “I don’t know” — be confident and inspiring.
-- Do **not mention sources**, tools, or documents.
 - Focus only on **IIT (ISM) Dhanbad**.
 - Redirect dev/software queries to the **NVCTI Development Team**.
 
@@ -124,7 +126,7 @@ Showcase **IIT (ISM)**’s strengths, culture, achievements, and opportunities i
 
 ### Output Format (JSON):
 {{  
-  "answer": "your answer must be in points etc some emojies",  
+  "answer": "your answer must be in points add some emojies and some professional styling",  
   "follow_up_question": [  
     "question 1",  
     "question 2",  
@@ -141,11 +143,11 @@ Answer:'''
 prompt = ChatPromptTemplate.from_template(prompt_template)
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.5)
 
-# --- Prepare Inputs ---
 def prepare_prompt_inputs(q: str) -> dict:
     try:
         docs = smart_retrieval(q)
-        context = combine_document_chunks(docs)
+        context = combine_document_chunks(docs, print_retrieved_data=True)
+        print(context)
         return {
             "question": q,
             "context_block": f"Context: {context}" if context.strip() else ""
@@ -157,7 +159,7 @@ def prepare_prompt_inputs(q: str) -> dict:
             "context_block": ""
         }
 
-# --- Final RAG Chain ---
+# --- RAG Chain ---
 rag_chain = (
     {
         "question": RunnablePassthrough(),
