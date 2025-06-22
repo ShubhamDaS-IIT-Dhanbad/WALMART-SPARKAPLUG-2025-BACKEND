@@ -126,6 +126,7 @@ Highlight *IIT (ISM)’s* strengths, uniqueness, culture, and opportunities in e
 - Always add relevant *official links, dates, achievements, rankings, or **unique selling points* to strengthen your response.
 
 KEEP THE ANSWER CONSISELY DETAILED BUT CRISP.
+For any updates of the official placements and internships statistics of IIT (ISM) Dhanbad, visit here: https://bit.ly/3G8yHS8 
 ---
 
 ### Output Format (JSON):
