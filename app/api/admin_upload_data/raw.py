@@ -21,10 +21,12 @@ load_dotenv()
 raw_router = APIRouter(prefix="/upload", tags=["post"])
 
 # ---------- Appwrite Configuration ----------
-PROJECT_ID = "6825c9130002bf2b1514"
-DATABASE_ID = "6836c51200377ed9fbdd"
-API_KEY = "standard_92aaa34dd0375dc1bf9c36180dd91c3a923a2c8d6e92da38a609ce0d6d00734c62700cb1fe23218bd959e64552ff396f740faf1c3d0c2cb66cfc5f164e9ec845eb1750ebc8d4356e4d9c1a16a1f68bc446b6fa45dbebaee001ceb66a4447dfc4fff677b8125718833c4e5a099c450a97d875ed0b1d4eb115bbf3d06e09b7b039"
-APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1"
+from app.core.config import settings
+
+PROJECT_ID =settings.APPWRITE_PROJECT_ID
+DATABASE_ID =settings.APPWRITE_DATABASE_ID
+API_KEY = settings.APPWRITE_API_KEY
+APPWRITE_ENDPOINT =settings.APPWRITE_ENDPOINT
 
 client = Client()
 client.set_endpoint(APPWRITE_ENDPOINT)

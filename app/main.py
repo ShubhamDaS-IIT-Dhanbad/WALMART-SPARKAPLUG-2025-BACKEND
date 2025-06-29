@@ -5,19 +5,14 @@ from app.core.config import settings
 
 
 from app.api.user_chat.chat_rag_v2 import chat_rag_v2_router
-# from app.api.user_chat.chat_rag_v1 import user_chat_router
 
 from app.api.appwrite.folder_create import folder_create_router
 from app.api.appwrite.document_folder_create import document_folder_router
 
 from app.api.admin_upload_data.pdf_text_v3 import pdf_text_router_v3
-# from bck.app.api.admin_upload_data.pdf_text_old_v.pdf_text import pdf_text_router
-# from bck.app.api.admin_upload_data.pdf_text_old_v.pdf_text_v2 import pdf_text_router_v2
 from app.api.admin_upload_data.qna import qna_router
 from app.api.admin_upload_data.raw import raw_router
 
-
-from app.api.delete.delete_from_pine_cone import delete_from_pine_cone_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -62,13 +57,8 @@ app.include_router(document_folder_router)
 
 #UPLOAD DATA ROUTES [PDF / JSON / RAW]
 app.include_router(pdf_text_router_v3)
-# app.include_router(pdf_text_router)
-# app.include_router(pdf_text_router_v2)
 app.include_router(qna_router)
 app.include_router(raw_router) 
-
-#DELETE FROM PINE CONE AND UPDATE IN APPWRITE
-app.include_router(delete_from_pine_cone_router)
 
 
 

@@ -16,6 +16,12 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         
+        "https://ism-buddy-frontend.onrender.com/",
+        "https://ism-buddy-frontend.onrender.com",
+        "https://ism-buddy-frontend.onrender.com/chat",
+        "https://ism-buddy-frontend.onrender.com/admin",
+        
+        
         "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/",
         "https://chat-bot-iit-ism-frontend-dbwo.vercel.app",
         "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/chat",
@@ -34,6 +40,12 @@ class Settings(BaseSettings):
     PINECONE_INDEX_NAME: str
     PINECONE_INDEX_URI: str
     GEMINI_API_KEY:str
+    
+    #appwrite env variable
+    APPWRITE_PROJECT_ID: str
+    APPWRITE_DATABASE_ID: str
+    APPWRITE_API_KEY: str
+    APPWRITE_ENDPOINT:str
     
     model_config = SettingsConfigDict(
         env_file=".env",
