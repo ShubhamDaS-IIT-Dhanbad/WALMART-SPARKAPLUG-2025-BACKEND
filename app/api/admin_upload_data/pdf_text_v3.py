@@ -8,7 +8,6 @@ import re
 from typing import List, Optional
 from dotenv import load_dotenv
 import tiktoken
-import openai
 import shutil
 
 from app.core.config import settings
@@ -28,12 +27,11 @@ from pinecone import Pinecone, ServerlessSpec
 pdf_text_router_v3 = APIRouter(prefix="/upload", tags=["post"])
 load_dotenv()
 
-from app.core.config import settings
-
-PROJECT_ID =settings.APPWRITE_PROJECT_ID
-DATABASE_ID =settings.APPWRITE_DATABASE_ID
+PROJECT_ID = settings.APPWRITE_PROJECT_ID
+DATABASE_ID = settings.APPWRITE_DATABASE_ID
 API_KEY = settings.APPWRITE_API_KEY
-APPWRITE_ENDPOINT =settings.APPWRITE_ENDPOINT
+APPWRITE_ENDPOINT = settings.APPWRITE_ENDPOINT
+PINECONE_INDEX_NAME = "ism-buddy-dim-1536"  # ← ADD THIS
 
 client = Client()
 client.set_endpoint(APPWRITE_ENDPOINT)
@@ -41,18 +39,21 @@ client.set_project(PROJECT_ID)
 client.set_key(API_KEY)
 databases = Databases(client)
 
-PINECONE_API_KEY = settings.PINECONE_API_KEY
-PINECONE_INDEX_NAME = "ism-buddy-dim-1536"
-pc = Pinecone(api_key=PINECONE_API_KEY)
+# ---------- Pinecone Setup ----------
+try:
+    pc = Pinecone(api_key=settings.PINECONE_API_KEY)
 
-if PINECONE_INDEX_NAME not in pc.list_indexes().names():
-    pc.create_index(
-        name=PINECONE_INDEX_NAME,
-        dimension=1536,
-        metric="dotproduct",
-        spec=ServerlessSpec(cloud="aws", region="us-east-1")
-    )
-index = pc.Index(PINECONE_INDEX_NAME)
+    if PINECONE_INDEX_NAME not in pc.list_indexes().names():
+        pc.create_index(
+            name=PINECONE_INDEX_NAME,
+            dimension=1536,
+            metric="dotproduct",
+            spec=ServerlessSpec(cloud="aws", region="us-east-1")
+        )
+    index = pc.Index(PINECONE_INDEX_NAME)
+except Exception as e:
+    print(f"❌ Error initializing Pinecone: {e}")
+    index = None
 
 embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
 encoding = tiktoken.encoding_for_model("gpt-4o-mini")
@@ -72,7 +73,6 @@ def clean_and_tag_urls(text: str) -> tuple[str, list]:
     else:
         tagged = text
     return tagged, urls
-
 
 async def process_chunks(chunks: List[Document], filename: str):
     all_vectors = []
@@ -109,11 +109,11 @@ async def upload_text_file(
     collection_id: str = Form(...),
     file: UploadFile = File(...)
 ):
+    temp_dir = tempfile.mkdtemp()
     try:
         if file.content_type != "text/plain":
             raise HTTPException(status_code=400, detail="Only .txt files are supported.")
 
-        temp_dir = tempfile.mkdtemp()
         file_path = os.path.join(temp_dir, f"{uuid.uuid4()}.txt")
         with open(file_path, "wb") as f:
             f.write(await file.read())
@@ -126,27 +126,22 @@ async def upload_text_file(
         chunks = splitter.split_documents(docs)
 
         all_vectors, all_ids, total_tokens = await process_chunks(chunks, filename)
-        print(all_vectors)
 
-        try:
-            index.upsert(vectors=all_vectors)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Pinecone upsert failed: {str(e)}")
+        index.upsert(vectors=all_vectors)
 
-        try:
-            databases.create_document(
-                database_id=DATABASE_ID,
-                collection_id=collection_id,
-                document_id=uuid.uuid4().hex,
-                data={
-                    "NAME": filename,
-                    "MAX_SIZE": len(all_vectors),
-                    "DRIVE_LINK": drivelink or ""
-                }
-            )
-        except AppwriteException as e:
-            index.delete(ids=all_ids)
-            raise HTTPException(status_code=500, detail=f"Appwrite error: {e.message}")
+        document_data = {
+            "NAME": filename,
+            "MAX_SIZE": len(all_vectors)
+        }
+        if drivelink:
+            document_data["DRIVE_LINK"] = drivelink
+
+        databases.create_document(
+            database_id=DATABASE_ID,
+            collection_id=collection_id,
+            document_id=uuid.uuid4().hex,
+            data=document_data
+        )
 
         return {
             "message": f"{len(all_vectors)} chunks uploaded and metadata saved.",
@@ -154,6 +149,9 @@ async def upload_text_file(
             "file_name": filename
         }
 
+    except AppwriteException as e:
+        index.delete(ids=all_ids)
+        raise HTTPException(status_code=500, detail=f"Appwrite error: {e.message}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
@@ -167,11 +165,11 @@ async def upload_pdf(
     collection_id: str = Form(...),
     file: UploadFile = File(...)
 ):
+    temp_dir = tempfile.mkdtemp()
     try:
         if file.content_type != "application/pdf":
             raise HTTPException(status_code=400, detail="Only .pdf files are supported.")
 
-        temp_dir = tempfile.mkdtemp()
         file_path = os.path.join(temp_dir, f"{uuid.uuid4()}.pdf")
         with open(file_path, "wb") as f:
             f.write(await file.read())
@@ -183,38 +181,32 @@ async def upload_pdf(
         chunks = splitter.split_documents(docs)
 
         all_vectors, all_ids, total_tokens = await process_chunks(chunks, filename)
-        print(all_vectors)
 
-        try:
-            index.upsert(vectors=all_vectors)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Pinecone upsert failed: {str(e)}")
+        index.upsert(vectors=all_vectors)
+        print("pdf here")
+        document_data = {
+            "NAME": filename,
+            "MAX_SIZE": len(all_vectors)
+        }
+        if drivelink:
+            document_data["DRIVE_LINK"] = drivelink
 
-        try:
-            data = {
-                "NAME": filename,
-                "MAX_SIZE": len(all_vectors)
-            }
-
-            if drivelink:
-                data["DRIVE_LINK"] = drivelink
-
-            databases.create_document(
-                database_id=DATABASE_ID,
-                collection_id=collection_id,
-                document_id=uuid.uuid4().hex,
-                data=data
-            )
-        except AppwriteException as e:
-            index.delete(ids=all_ids)
-            raise HTTPException(status_code=500, detail=f"Appwrite error: {e.message}")
-
+        databases.create_document(
+            database_id=DATABASE_ID,
+            collection_id=collection_id,
+            document_id=uuid.uuid4().hex,
+            data=document_data
+        )
+        print("here 2")
         return {
             "message": f"{len(all_vectors)} chunks uploaded and metadata saved.",
             "total_tokens": total_tokens,
             "file_name": filename
         }
 
+    except AppwriteException as e:
+        index.delete(ids=all_ids)
+        raise HTTPException(status_code=500, detail=f"Appwrite error: {e.message}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:

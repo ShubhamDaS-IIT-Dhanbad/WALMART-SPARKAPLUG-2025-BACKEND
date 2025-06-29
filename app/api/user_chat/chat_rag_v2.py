@@ -26,6 +26,7 @@ chat_rag_v2_router = APIRouter(prefix="/chat", tags=["chat"])
 # --- Pinecone Setup ---
 PINECONE_INDEX_NAME = "ism-buddy-dim-1536"
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
+
 if PINECONE_INDEX_NAME not in [i.name for i in pc.list_indexes().indexes]:
     pc.create_index(
         name=PINECONE_INDEX_NAME,
@@ -46,9 +47,12 @@ vector_store = PineconeVectorStore(
     index=index
 )
 
-# ⚠️ Replace with your real BM25 docs if needed
+# --- Documents for BM25 ---
 chunks = [
-    Document(page_content="IIT (ISM) Dhanbad is renowned for its mining engineering department.", metadata={"question": "Why choose IIT Dhanbad?", "answer": "It is famous for its mining program."}),
+    Document(
+        page_content="IIT (ISM) Dhanbad ",
+        metadata={"text": "IIT (ISM) Dhanbad"}
+    ),
 ]
 
 if not chunks:
@@ -72,20 +76,18 @@ def combine_document_chunks(documents: list[Document], print_retrieved_data: boo
     chunks = []
     for idx, doc in enumerate(documents):
         meta = doc.metadata or {}
-        text = meta.get("text") or (doc.page_content.strip() if doc.page_content else "")
-        parts = [
-            f"Q: {meta.get('question')}" if meta.get("question") else "",
-            f"A: {meta.get('answer')}" if meta.get("answer") else "",
-            text,
-            f"Links: {', '.join(meta['links'])}" if isinstance(meta.get("links"), list) and meta.get("links") else ""
-        ]
-        formatted = "\n".join([p for p in parts if p])
+        text = meta.get("text") or doc.page_content or ""
+        link = meta.get("link", "").strip()
+
+        formatted = text.strip()
+        if link:
+            formatted += f"\n🔗 Link: {link}"
+
         chunks.append(formatted)
 
         if print_retrieved_data:
             print(f"\n--- Chunk {idx + 1} ---")
-            print(f"Metadata: {json.dumps(meta, indent=2)}")
-            print(f"Content:\n{formatted}")
+            print(f"Text:\n{formatted}")
 
     return "\n\n--- SOURCE SPLIT ---\n\n".join(chunks)
 
@@ -152,7 +154,6 @@ def prepare_prompt_inputs(q: str) -> dict:
     try:
         docs = smart_retrieval(q)
         context = combine_document_chunks(docs, print_retrieved_data=True)
-        print(context)
         return {
             "question": q,
             "context_block": f"Context: {context}" if context.strip() else ""

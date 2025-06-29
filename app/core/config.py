@@ -39,7 +39,6 @@ class Settings(BaseSettings):
     PINECONE_ENV: str
     PINECONE_INDEX_NAME: str
     PINECONE_INDEX_URI: str
-    GEMINI_API_KEY:str
     
     #appwrite env variable
     APPWRITE_PROJECT_ID: str
