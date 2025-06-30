@@ -62,7 +62,7 @@ async def create_folder(payload: FolderCreateRequest):
             database_id=DATABASE_ID,
             collection_id=new_collection_id,
             key="DRIVE_LINK",
-            size=255,  # ✅ FIXED: size parameter is required
+            size=95500,  # ✅ FIXED: size parameter is required
             required=True
         )
         databases.create_integer_attribute(
