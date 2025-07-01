@@ -55,7 +55,7 @@ async def create_folder(payload: FolderCreateRequest):
             database_id=DATABASE_ID,
             collection_id=new_collection_id,
             key="NAME",
-            size=255,  # ✅ FIXED: size parameter is required
+            size=2550,  # ✅ FIXED: size parameter is required
             required=True
         )
         databases.create_string_attribute(

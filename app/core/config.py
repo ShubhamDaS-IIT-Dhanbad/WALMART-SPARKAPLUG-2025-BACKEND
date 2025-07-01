@@ -16,6 +16,8 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         
+        "https://chatbot.iitism.ac.in/",
+        "https://chatbot.iitism.ac.in/chat",
         "https://ism-buddy-frontend.onrender.com/",
         "https://ism-buddy-frontend.onrender.com",
         "https://ism-buddy-frontend.onrender.com/chat",
