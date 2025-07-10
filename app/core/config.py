@@ -16,20 +16,6 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         
-        "https://chatbot.iitism.ac.in/",
-        "https://chatbot.iitism.ac.in/chat",
-        "https://ism-buddy-frontend.onrender.com/",
-        "https://ism-buddy-frontend.onrender.com",
-        "https://ism-buddy-frontend.onrender.com/chat",
-        "https://ism-buddy-frontend.onrender.com/admin",
-        
-        
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/chat",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/admin",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app",
-        "https://chat-bot-iit-ism-frontend-dbwo.vercel.app/"
     ]
     
     # Database Configuration
@@ -42,11 +28,7 @@ class Settings(BaseSettings):
     PINECONE_INDEX_NAME: str
     PINECONE_INDEX_URI: str
     
-    #appwrite env variable
-    APPWRITE_PROJECT_ID: str
-    APPWRITE_DATABASE_ID: str
-    APPWRITE_API_KEY: str
-    APPWRITE_ENDPOINT:str
+    SCRAPY_DOG_API_KEY:str
     
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -1,0 +1,1127 @@
+{
+  "search_information": {
+    "location": {
+      "postal_code": "95829",
+      "province_code": "CA",
+      "city": "Sacramento",
+      "store_id": "3081"
+    }
+  },
+  "product_results": {
+    "us_item_id": "13518061189",
+    "product_id": "1658TG2FN4CO",
+    "variants": [
+      "actual_color-pearlsand",
+      "clothing_size-m"
+    ],
+    "upc": "195900812072",
+    "title": "Chaps Men's and Big Men's Linen-Blend Print Woven Shirt, Sizes S-3XL",
+    "short_description": "Complete with statement prints, The Chaps Men's and Big Men's Linen-Blend Print Woven Shirt, Sizes S-3XL is ready for summer. This men's shirt features a classic collar and button-front design along with a front pocket. A great everyday piece, this casual button-down shirt will add some fun to your warm-weather wardrobe, whether you're hanging at home or planning your next trip. Style with denim shorts and sneakers for a laid-back cool vibe.",
+    "detailed_description_html": "<ul>  <li>Material: 90% Cotton, 10% Linen</li>  <li>Men's short-sleeve shirt</li>  <li>Printed fabric</li>  <li>Button front</li>  <li>Front pocket</li> </ul>",
+    "category": [
+      {
+        "name": "Clothing",
+        "url": "https://www.walmart.com/cp/clothing/5438"
+      },
+      {
+        "name": "Mens Clothing",
+        "url": "https://www.walmart.com/cp/mens-clothing/133197"
+      },
+      {
+        "name": "Mens Shirts",
+        "url": "https://www.walmart.com/cp/mens-shirts/6286551"
+      },
+      {
+        "name": "Mens Casual Button Down Shirts",
+        "url": "https://www.walmart.com/cp/mens-casual-button-down-shirts/1224676"
+      }
+    ],
+    "seller_id": "F55CDC31AB754BB68FE0B39041159D63",
+    "seller_name": "Walmart.com",
+    "seller_display_name": "Walmart.com",
+    "delivery_date": "2025-07-11T21:59:00.000Z",
+    "specifications": [
+      {
+        "name": "Size",
+        "value": "M"
+      },
+      {
+        "name": "Clothing Size",
+        "value": "M"
+      },
+      {
+        "name": "Gender",
+        "value": "Male"
+      },
+      {
+        "name": "Fabric Content",
+        "value": "90% Cotton, 10% Linen"
+      },
+      {
+        "name": "Brand",
+        "value": "Chaps"
+      },
+      {
+        "name": "Model",
+        "value": "CM25SW231W"
+      },
+      {
+        "name": "Color",
+        "value": "Pearl Sand"
+      }
+    ],
+    "product_page_url": "https://www.walmart.com/ip/CHAPS-MEN-S-LINEN-BLEND-PRINT-WOVEN-SHIRT-Sizes-S-2XL/13518061189",
+    "price_map": [
+      20,
+      "USD",
+      {}
+    ],
+    "min_quantity": 1,
+    "max_quantity": 97,
+    "in_stock": "IN_STOCK",
+    "images": [
+      "https://i5.walmartimages.com/seo/Chaps-Men-s-and-Big-Men-s-Linen-Blend-Print-Woven-Shirt-Sizes-S-3XL_0d5153d3-adc8-40a2-8fe6-99b3cfcff0fc.ae93a42cb59f50d1581d9bf4eee18051.jpeg",
+      "https://i5.walmartimages.com/asr/7bf2d7c5-924f-4ae7-ae46-0aa5c3be54ae.0ed72466a62b8a3d15ce396c06e7a805.jpeg",
+      "https://i5.walmartimages.com/asr/30112ca7-05e2-4da0-bbea-1b3b306352d1.9939bb4dc704efbca1caed9b3279297a.jpeg",
+      "https://i5.walmartimages.com/asr/94540381-6a59-43f6-a4dd-dd724ae2a4d2.d99711de06c0ace8ae5bc098ce3aa83d.jpeg",
+      "https://i5.walmartimages.com/asr/3c037bc0-adaa-44bf-80ef-5383de86cdd3.18dd75261604d2aef940b8e4bae76581.jpeg",
+      "https://i5.walmartimages.com/asr/e9f88b2c-8c76-47ae-bb08-07c381aa1c71.c14565ca50b5c6f192874e3c7f0de4e9.jpeg"
+    ],
+    "reviews": 5,
+    "rating": 5,
+    "offer_id": "5F609BD2C8FD34AF8B4EC67BEF92D590",
+    "offers": [
+      {
+        "seller_id": "F55CDC31AB754BB68FE0B39041159D63",
+        "catalog_seller_id": 0,
+        "seller_name": "Walmart.com",
+        "seller_display_name": "Walmart.com",
+        "price": 20
+      }
+    ],
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "variant_swatches": [
+      {
+        "name": "Color",
+        "available_selections": [
+          {
+            "id": "actual_color-lightolive",
+            "name": "Light Olive",
+            "products": [
+              {
+                "product_id": "4BIS248O8QRS",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4BIS248O8QRS",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "5TRNPKYEJ25D",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5TRNPKYEJ25D",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6Q1FH9QH7GMB",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6Q1FH9QH7GMB",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1B2ATH1YWMVL",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1B2ATH1YWMVL",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "4ZYZ2X3ETYKY",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4ZYZ2X3ETYKY",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "actual_color-palekhaki",
+            "name": "Pale Khaki",
+            "products": [
+              {
+                "product_id": "4YU28FHQYKFT",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4YU28FHQYKFT",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "41Q3F6GJVAZ5",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=41Q3F6GJVAZ5",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6NHL8P6SN4AR",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6NHL8P6SN4AR",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "336K9YDPEKNM",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=336K9YDPEKNM",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "45YVLC1I34YD",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=45YVLC1I34YD",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "actual_color-pearlsand",
+            "name": "Pearl Sand",
+            "products": [
+              {
+                "product_id": "5ZUNWS4NCE21",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5ZUNWS4NCE21",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "7JEKCGFVF6DE",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=7JEKCGFVF6DE",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1658TG2FN4CO",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1658TG2FN4CO",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "3VJXWG7J2WXU",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=3VJXWG7J2WXU",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6MJPKH4W6O4I",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6MJPKH4W6O4I",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "actual_color-seasalt",
+            "name": "Sea Salt",
+            "products": [
+              {
+                "product_id": "6MZP005SQ4JR",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6MZP005SQ4JR",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2O5UT88LLFPC",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2O5UT88LLFPC",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6E2M2JAIFZHS",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6E2M2JAIFZHS",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "3XE51TUITKWO",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=3XE51TUITKWO",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1UOZ626PA82P",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1UOZ626PA82P",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "actual_color-springlake",
+            "name": "Spring Lake",
+            "products": [
+              {
+                "product_id": "5RE1EA3SRBB6",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5RE1EA3SRBB6",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6XVD5H6BRMO1",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6XVD5H6BRMO1",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "4N8ASECWZ186",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4N8ASECWZ186",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "7CI5FGCUS151",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=7CI5FGCUS151",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2RPLW1YADJ5G",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2RPLW1YADJ5G",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "actual_color-stripedseasalt",
+            "name": "Striped Sea Salt",
+            "products": [
+              {
+                "product_id": "1QWZKQMGXO2F",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1QWZKQMGXO2F",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "5LNUEOH1YCSK",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5LNUEOH1YCSK",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "75YV2T244U9W",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=75YV2T244U9W",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6JUB1IYY785K",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6JUB1IYY785K",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2W0IEJ59XWSA",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2W0IEJ59XWSA",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Clothing Size",
+        "available_selections": [
+          {
+            "id": "clothing_size-s",
+            "name": "S",
+            "products": [
+              {
+                "product_id": "5LNUEOH1YCSK",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5LNUEOH1YCSK",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "7JEKCGFVF6DE",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=7JEKCGFVF6DE",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2O5UT88LLFPC",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2O5UT88LLFPC",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "41Q3F6GJVAZ5",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=41Q3F6GJVAZ5",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6Q1FH9QH7GMB",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6Q1FH9QH7GMB",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6XVD5H6BRMO1",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6XVD5H6BRMO1",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-s"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "clothing_size-m",
+            "name": "M",
+            "products": [
+              {
+                "product_id": "6MZP005SQ4JR",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6MZP005SQ4JR",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1658TG2FN4CO",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1658TG2FN4CO",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "5RE1EA3SRBB6",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5RE1EA3SRBB6",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "75YV2T244U9W",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=75YV2T244U9W",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "45YVLC1I34YD",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=45YVLC1I34YD",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "4ZYZ2X3ETYKY",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4ZYZ2X3ETYKY",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-m"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "clothing_size-l",
+            "name": "L",
+            "products": [
+              {
+                "product_id": "1QWZKQMGXO2F",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1QWZKQMGXO2F",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "5TRNPKYEJ25D",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5TRNPKYEJ25D",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "4YU28FHQYKFT",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4YU28FHQYKFT",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1UOZ626PA82P",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1UOZ626PA82P",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "4N8ASECWZ186",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4N8ASECWZ186",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6MJPKH4W6O4I",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6MJPKH4W6O4I",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-l"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "clothing_size-xl",
+            "name": "XL",
+            "products": [
+              {
+                "product_id": "4BIS248O8QRS",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=4BIS248O8QRS",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "5ZUNWS4NCE21",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=5ZUNWS4NCE21",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "336K9YDPEKNM",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=336K9YDPEKNM",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6E2M2JAIFZHS",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6E2M2JAIFZHS",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "7CI5FGCUS151",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=7CI5FGCUS151",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2W0IEJ59XWSA",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2W0IEJ59XWSA",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "clothing_size-2xl",
+            "name": "2XL",
+            "products": [
+              {
+                "product_id": "6NHL8P6SN4AR",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6NHL8P6SN4AR",
+                "variants": [
+                  "actual_color-palekhaki",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "3VJXWG7J2WXU",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=3VJXWG7J2WXU",
+                "variants": [
+                  "actual_color-pearlsand",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "6JUB1IYY785K",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=6JUB1IYY785K",
+                "variants": [
+                  "actual_color-stripedseasalt",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "3XE51TUITKWO",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=3XE51TUITKWO",
+                "variants": [
+                  "actual_color-seasalt",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "2RPLW1YADJ5G",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=2RPLW1YADJ5G",
+                "variants": [
+                  "actual_color-springlake",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              },
+              {
+                "product_id": "1B2ATH1YWMVL",
+                "scrapingdog_link": "https://api.scrapingdog.com/walmart/product?api_key=&product_id=1B2ATH1YWMVL",
+                "variants": [
+                  "actual_color-lightolive",
+                  "clothing_size-2xl"
+                ],
+                "in_stock": "IN_STOCK",
+                "price_map": {
+                  "price": 20,
+                  "currency": "USD",
+                  "was_price": {}
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  "reviews_results": {
+    "ratings": [
+      {
+        "starts": 1,
+        "count": 0
+      },
+      {
+        "starts": 2,
+        "count": 0
+      },
+      {
+        "starts": 3,
+        "count": 0
+      },
+      {
+        "starts": 4,
+        "count": 0
+      },
+      {
+        "starts": 5,
+        "count": 5
+      }
+    ],
+    "reviews": {
+      "rating": 5,
+      "count": 5,
+      "top_positive": {
+        "title": "",
+        "text": "",
+        "rating": 0,
+        "positive_feedback": "",
+        "negative_feedback": "",
+        "review_submission_time": "",
+        "user_nickname": "",
+        "customer_type": []
+      },
+      "top_negative": {
+        "title": "",
+        "text": "",
+        "rating": 0,
+        "positive_feedback": "",
+        "negative_feedback": "",
+        "review_submission_time": "",
+        "user_nickname": "",
+        "customer_type": []
+      },
+      "top_mentions": [],
+      "customer_reviews": [
+        {
+          "title": null,
+          "text": "Fits perfectly. Cloth is comfortable and durable.",
+          "rating": 5,
+          "review_submission_time": "6/18/2025",
+          "user_nickname": "Don",
+          "customer_type": [
+            "VerifiedPurchaser"
+          ]
+        }
+      ]
+    }
+  }
+}
