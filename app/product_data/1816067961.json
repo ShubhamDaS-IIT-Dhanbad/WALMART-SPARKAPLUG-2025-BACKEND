@@ -475,6 +475,7 @@
       "customer_reviews": [
         {
           "title": "Awesome headphones",
+          "sentiment":"positive",
           "text": "It's a great pair of headphones reasonably priced the sound is exquisite. It's waterproof because I already dropped it in the sink.Lol it's cool looking it has a digital screen. It keeps charge for very long maybe past 24 hours depending on how you use it but it's great. I do recommend.",
           "rating": 5,
           "review_submission_time": "3/22/2025",
@@ -483,6 +484,7 @@
         },
         {
           "title": "Really worth your money.",
+          "sentiment":"negative",
           "text": "A very good quality earbuds, the sound is clear, they have a wide Bluetooth range and excellent battery duration. I have used them for a whole week sometimes during day and at night without having to charge them. I am more than satisfied with my purchase.",
           "rating": 5,
           "review_submission_time": "4/17/2025",
@@ -491,6 +493,7 @@
         },
         {
           "title": null,
+          "sentiment":"positive",
           "text": "I bought this a few months ago in 2024, and sometime in Nov, I forgot to remove them from my pants pockets, and I accidentally put them in the washer and eventually dryer. I only realized after I was removing the laundry from the dryer. It's now January 2025, and guess what? They are still working just as they did when I got them. They are not only waterproof but also heat resistant (but I dont advise you put them in the dryer). This is the best buy ever. I highly recommend it! Great quality \ud83d\udc4c",
           "rating": 5,
           "review_submission_time": "1/15/2025",
@@ -499,14 +502,16 @@
         },
         {
           "title": "Amazing sound and value!",
+          "sentiment":"positive",
           "text": "I was an AirPod devotee until my pair died and it was too cost prohibitive to replace them.  I purchased Bose QC over ear as a replacement, but also wanted some in-earbuds as well.   While the sound is very good with the Bose,  the sound with the P91\u2019s  is actually far superior and identical to my AirPods - I\u2019m absolutely floored that I only paid $23 for these.   The bass is incredible!  I will say the only thing I found superior with the AirPods is noise cancellation.  It is good with the P91\u2019s but just not quite as good as AirPods.  That being said - I am still giving a 5 star based on the outstanding sound quality and value.   If I would have known about these, I would not have dropped all that $$$ on the Bose!",
           "rating": 5,
-          "review_submission_time": "1/23/2025",
+          "review_submission_time": "1/14/2025",
           "user_nickname": "Erin",
           "customer_type": ["VerifiedPurchaser"]
         },
         {
           "title": "Worth It!",
+          "sentiment":"positive",
           "text": "For the price, these buds are Really Good. The sound is clear and plenty loud. The size is pocket friendly. Battery display is helpful. Fit is comfortable. My favorite feature is the rubberized case. I've dropped it 3 times, (accidentally, of course) and the case has the smallest of scratches. I love them.",
           "rating": 5,
           "review_submission_time": "1/28/2025",
@@ -515,6 +520,7 @@
         },
         {
           "title": "Better than competitors",
+          "sentiment":"negative",
           "text": "I love these earbuds! The sound quality is impeccable. I like to blow my eardrums out with my music and these help me with that greatly. I\u2019ve had Jlabs and other cheap wireless earbuds but these are the best by far. The only thing I wish they had was a left and right label directly on the earbuds, but other than that they hold a pretty good charge, the case is compact and comes with a charger cord, and they sound great.",
           "rating": 5,
           "review_submission_time": "4/10/2025",
@@ -523,6 +529,7 @@
         },
         {
           "title": "Better than expected and great price!!",
+          "sentiment":"positive",
           "text": "I bought these in a fast hurry for an unexpected trip against the advice I was given about being too cheap and would be disappointing. THESE were awesome! Still holding a 90% charge and sounded great, easy to work with (I'm not so saavy)!  I am very pleased with these, arrived quickly and I have no regrets!  I would and will buy again if the need arises! Thank you!",
           "rating": 5,
           "review_submission_time": "6/21/2025",
@@ -531,6 +538,7 @@
         },
         {
           "title": null,
+          "sentiment":"negative",
           "text": "good earbuds these to me sound the same as my son's JBL but I paid 1/3 of the price they have nice deep bass, again I compared them they sound just as good. I would of liked them more if they were louder but for $20 I got a pretty good deal. they sound clear and I can also make phone calls.",
           "rating": 5,
           "review_submission_time": "9/9/2024",
@@ -539,14 +547,106 @@
         },
         {
           "title": "Eeeeeh, they're ok.",
+          "sentiment":"positive",
           "text": "I thought these would be good enough for what I needed to do when I was working in the yard. but when you have engines running the engines were loud enough that I couldn't hear the music coming through the ear plugs. I'm going to stick with full earphones. and even in quiet spaces it didn't get loud enough where I wanted it to be. I guess that's just a safety feature.",
           "rating": 3,
-          "review_submission_time": "10/22/2024",
+          "review_submission_time": "8/29/2024",
           "user_nickname": "Tyrone",
           "customer_type": ["VerifiedPurchaser"]
         },
         {
           "title": "Can't here me talking???",
+          "sentiment":"positive",
+          "text": "If you only want to listen to music or podcasts, these will work for you.  if you want to have a conversation with others, these do not work very well at all.  I have folks telling me all the time they can't hear me it comes out muffled, sounds like i'm far away, etc.\n\nI take them out and all of a sudden the call is clear.\n\nI'm not very happy with these at all!",
+          "rating": 1,
+          "review_submission_time": "9/30/2024",
+          "user_nickname": "PincheBen",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Awesome headphones",
+          "sentiment":"positive",
+          "text": "It's a great pair of headphones reasonably priced the sound is exquisite. It's waterproof because I already dropped it in the sink.Lol it's cool looking it has a digital screen. It keeps charge for very long maybe past 24 hours depending on how you use it but it's great. I do recommend.",
+          "rating": 5,
+          "review_submission_time": "9/20/2024",
+          "user_nickname": "Safiya",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Really worth your money.",
+          "sentiment":"negative",
+          "text": "A very good quality earbuds, the sound is clear, they have a wide Bluetooth range and excellent battery duration. I have used them for a whole week sometimes during day and at night without having to charge them. I am more than satisfied with my purchase.",
+          "rating": 5,
+          "review_submission_time": "10/9/2024",
+          "user_nickname": "Aaron",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": null,
+          "sentiment":"positive",
+          "text": "I bought this a few months ago in 2024, and sometime in Nov, I forgot to remove them from my pants pockets, and I accidentally put them in the washer and eventually dryer. I only realized after I was removing the laundry from the dryer. It's now January 2025, and guess what? They are still working just as they did when I got them. They are not only waterproof but also heat resistant (but I dont advise you put them in the dryer). This is the best buy ever. I highly recommend it! Great quality \ud83d\udc4c",
+          "rating": 5,
+          "review_submission_time": "9/29/2024",
+          "user_nickname": "Sarah",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Amazing sound and value!",
+          "sentiment":"positive",
+          "text": "I was an AirPod devotee until my pair died and it was too cost prohibitive to replace them.  I purchased Bose QC over ear as a replacement, but also wanted some in-earbuds as well.   While the sound is very good with the Bose,  the sound with the P91\u2019s  is actually far superior and identical to my AirPods - I\u2019m absolutely floored that I only paid $23 for these.   The bass is incredible!  I will say the only thing I found superior with the AirPods is noise cancellation.  It is good with the P91\u2019s but just not quite as good as AirPods.  That being said - I am still giving a 5 star based on the outstanding sound quality and value.   If I would have known about these, I would not have dropped all that $$$ on the Bose!",
+          "rating": 5,
+          "review_submission_time": "9/17/2024",
+          "user_nickname": "Erin",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Worth It!",
+          "sentiment":"positive",
+          "text": "For the price, these buds are Really Good. The sound is clear and plenty loud. The size is pocket friendly. Battery display is helpful. Fit is comfortable. My favorite feature is the rubberized case. I've dropped it 3 times, (accidentally, of course) and the case has the smallest of scratches. I love them.",
+          "rating": 5,
+          "review_submission_time": "9/8/2024",
+          "user_nickname": "anonymous",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Better than competitors",
+          "sentiment":"negative",
+          "text": "I love these earbuds! The sound quality is impeccable. I like to blow my eardrums out with my music and these help me with that greatly. I\u2019ve had Jlabs and other cheap wireless earbuds but these are the best by far. The only thing I wish they had was a left and right label directly on the earbuds, but other than that they hold a pretty good charge, the case is compact and comes with a charger cord, and they sound great.",
+          "rating": 5,
+          "review_submission_time": "9/4/2029",
+          "user_nickname": "Skylar",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Better than expected and great price!!",
+          "sentiment":"positive",
+          "text": "I bought these in a fast hurry for an unexpected trip against the advice I was given about being too cheap and would be disappointing. THESE were awesome! Still holding a 90% charge and sounded great, easy to work with (I'm not so saavy)!  I am very pleased with these, arrived quickly and I have no regrets!  I would and will buy again if the need arises! Thank you!",
+          "rating": 5,
+          "review_submission_time": "8/27/2024",
+          "user_nickname": "Holly",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": null,
+          "sentiment":"negative",
+          "text": "good earbuds these to me sound the same as my son's JBL but I paid 1/3 of the price they have nice deep bass, again I compared them they sound just as good. I would of liked them more if they were louder but for $20 I got a pretty good deal. they sound clear and I can also make phone calls.",
+          "rating": 5,
+          "review_submission_time": "7/25/2024",
+          "user_nickname": "Juan",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Eeeeeh, they're ok.",
+          "sentiment":"positive",
+          "text": "I thought these would be good enough for what I needed to do when I was working in the yard. but when you have engines running the engines were loud enough that I couldn't hear the music coming through the ear plugs. I'm going to stick with full earphones. and even in quiet spaces it didn't get loud enough where I wanted it to be. I guess that's just a safety feature.",
+          "rating": 3,
+          "review_submission_time": "7/20/2024",
+          "user_nickname": "Tyrone",
+          "customer_type": ["VerifiedPurchaser"]
+        },
+        {
+          "title": "Can't here me talking???",
+          "sentiment":"positive",
           "text": "If you only want to listen to music or podcasts, these will work for you.  if you want to have a conversation with others, these do not work very well at all.  I have folks telling me all the time they can't hear me it comes out muffled, sounds like i'm far away, etc.\n\nI take them out and all of a sudden the call is clear.\n\nI'm not very happy with these at all!",
           "rating": 1,
           "review_submission_time": "9/30/2024",

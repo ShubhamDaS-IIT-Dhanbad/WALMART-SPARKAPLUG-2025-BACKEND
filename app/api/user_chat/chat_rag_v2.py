@@ -14,32 +14,37 @@ single_product_qa_router = APIRouter(
 )
 
 class ProductQARequest(BaseModel):
-    product_id: str
+    product_id: str  # Now a comma-separated string
     query: str
 
 @single_product_qa_router.post("/")
 async def product_qa(request: ProductQARequest):
-    product_id = request.product_id
+    product_ids = [pid.strip() for pid in request.product_id.split(",") if pid.strip()]
     query = request.query
+    print(product_ids)
 
     data_dir = "app/product_data"
     os.makedirs(data_dir, exist_ok=True)
 
-    md_path = os.path.join(data_dir, f"{product_id}.md")
-    
-    if not os.path.exists(md_path):
-        raise HTTPException(status_code=404, detail="Product markdown file not found.")
+    product_docs = []
 
-    with open(md_path, "r", encoding="utf-8") as f:
-        product_doc = f.read()
+    for idx, pid in enumerate(product_ids, 1):
+        md_path = os.path.join(data_dir, f"{pid}.md")
+        if not os.path.exists(md_path):
+            raise HTTPException(status_code=404, detail=f"Product markdown file for ID {pid} not found.")
+        
+        with open(md_path, "r", encoding="utf-8") as f:
+            doc = f.read()
+            product_docs.append(f"### Product {idx} (ID: {pid}):\n{doc}")
+
+    combined_product_info = "\n\n".join(product_docs)
 
     # Prompt Template
     prompt = ChatPromptTemplate.from_template(
         """
         You are a helpful product assistant.
-        Answer the following user query using the markdown document provided.
+        Answer the following user query using the markdown documents provided for multiple products.
 
-        ### Product Info:
         {product_info}
 
         ### Query:
@@ -47,14 +52,12 @@ async def product_qa(request: ProductQARequest):
         """
     )
 
-    # Initialize model
+    # LLM + chain
     llm = ChatOpenAI(api_key=settings.OPENAI_API_KEY, model="gpt-4o-mini")
-
-    # Chain
     chain = prompt | llm | StrOutputParser()
 
     result = chain.invoke({
-        "product_info": product_doc,
+        "product_info": combined_product_info,
         "user_query": query
     })
 
