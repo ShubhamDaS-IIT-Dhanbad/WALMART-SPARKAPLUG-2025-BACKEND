@@ -16,7 +16,9 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         "https://walmart-sparkaplug-2025-frontend.vercel.app",
-        "https://walmart-sparkaplug-2025-frontend.vercel.app/"
+        "https://walmart-sparkaplug-2025-frontend.vercel.app/",
+        "https://walmart-sparkathon-2025.vercel.app",
+        "https://walmart-sparkathon-2025.vercel.app/"
         
     ]
     
