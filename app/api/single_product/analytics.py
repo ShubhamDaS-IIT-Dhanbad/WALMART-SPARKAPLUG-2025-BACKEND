@@ -131,6 +131,9 @@ def data_to_json_reponse(product_data: dict):
     reviews_data = product_data.get("reviews_results", {})
 
     title = product.get("title", "N/A")
+    tp = product.get("tp", "N/A")
+    tn= product.get("tn", "N/A")
+    ss= product.get("ss", "N/A")
     short_desc = product.get("short_description", "N/A")
     specs = product.get("specifications", [])
     product_page_url = product.get("product_page_url", "N/A")
@@ -157,6 +160,9 @@ def data_to_json_reponse(product_data: dict):
             "price_map": price_map,
             "min_quantity": min_quantity,
             "max_quantity": max_quantity,
+            "tp":tp,
+            "tn":tn,
+            "ss":ss,
        
             "reviews_count": total_reviews,
             "average_rating": avg_rating,
