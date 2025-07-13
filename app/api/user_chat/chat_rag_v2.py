@@ -41,17 +41,19 @@ async def product_qa(request: ProductQARequest):
 
     # Prompt Template
     prompt = ChatPromptTemplate.from_template(
-        """
-        You are a helpful product assistant.
-        Answer the following user query using the markdown documents provided for multiple products.
+    """You are a helpful product assistant. Use the provided product information to answer the user’s query clearly and accurately.
 
-        {product_info}
+    {product_info}
 
-        ### Query:
-        {user_query}
-        """
+    ### Instructions:
+    - If more than one product is listed, and the user asks to compare or rank them, evaluate and assign a score (out of 10) to each product based on the context of the query.
+    - Clearly explain the reasoning behind your scores or ranking.
+    - Highlight key differences, strengths, and weaknesses relevant to the query.
+
+    ### User Query:
+    {user_query}
+    """
     )
-
     # LLM + chain
     llm = ChatOpenAI(api_key=settings.OPENAI_API_KEY, model="gpt-4o-mini")
     chain = prompt | llm | StrOutputParser()
